@@ -1,0 +1,149 @@
+<!-- 
+  MEATAHOLIC - Urgency Banners Component
+  P5 Implementation: Stock Scarcity + Live Viewers
+  
+  Usage:
+  1. Include urgency-signals.js
+  2. Add data attributes to containers:
+     - data-stock-indicator (for stock bar)
+     - data-live-viewers (for viewer count)
+     - data-urgency-banner (for promotional banners)
+-->
+
+<!-- Stock Scarcity Indicator -->
+<div data-stock-indicator data-stock="7" data-initial-stock="50">
+  <!-- Auto-populated by urgency-signals.js -->
+</div>
+
+<!-- Manual Stock Indicator (fallback) -->
+<div class="stock-indicator">
+  <div class="stock-indicator__bar">
+    <div class="stock-indicator__fill stock-indicator__fill--low" style="width: 14%;"></div>
+  </div>
+  <span>⚡ Only 7 remaining</span>
+</div>
+
+<!-- Live Viewers Counter -->
+<div data-live-viewers>
+  <!-- Auto-populated by urgency-signals.js -->
+</div>
+
+<!-- Manual Live Viewers (fallback) -->
+<div class="live-viewers">
+  <span class="live-viewers__dot"></span>
+  <span>23 people viewing</span>
+</div>
+
+<!-- Urgency Banners -->
+
+<!-- Scarcity Banner -->
+<div data-urgency-banner="scarcity" data-urgency-message="🔥 Only 3 left in stock!">
+  <!-- Auto-populated -->
+</div>
+
+<!-- Manual Scarcity Banner -->
+<div class="urgency-banner urgency-banner--scarcity">
+  <svg class="urgency-banner__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+  </svg>
+  <span>🔥 Only 3 left in stock!</span>
+</div>
+
+<!-- Viewers Banner -->
+<div data-urgency-banner="viewers">
+  <!-- Auto-populated -->
+</div>
+
+<!-- Manual Viewers Banner -->
+<div class="urgency-banner urgency-banner--viewers">
+  <svg class="urgency-banner__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+    <circle cx="12" cy="12" r="3"/>
+  </svg>
+  <span>👀 12 people are viewing this right now</span>
+</div>
+
+<!-- Sale Banner -->
+<div data-urgency-banner="sale" data-urgency-message="⏰ Flash Sale ends in 2 hours!">
+  <!-- Auto-populated -->
+</div>
+
+<!-- Manual Sale Banner -->
+<div class="urgency-banner urgency-banner--scarcity">
+  <svg class="urgency-banner__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M6 9H4.5a2.5 2.5 0 010-5H6"/>
+    <path d="M18 9h1.5a2.5 2.5 0 000-5H18"/>
+    <path d="M4 22h16"/>
+    <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+    <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+    <path d="M18 2H6v7a6 6 0 0012 0V2z"/>
+  </svg>
+  <span>⏰ Flash Sale ends in 2 hours!</span>
+</div>
+
+<!-- Combined: Product Card with Urgency -->
+<div class="product-card">
+  <!-- Most Popular Badge (Quick Win) -->
+  <span class="product-badge product-badge--popular">Most Popular</span>
+  
+  <div class="product-card__image">
+    <img src="beef-premium.jpg" alt="Premium Beef" loading="lazy">
+    
+    <!-- Stock indicator overlay -->
+    <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.7));">
+      <div class="stock-indicator" style="color: white;">
+        <div class="stock-indicator__bar" style="background: rgba(255,255,255,0.3);">
+          <div class="stock-indicator__fill stock-indicator__fill--low" style="width: 15%;"></div>
+        </div>
+        <span style="font-size: 12px;">Only 5 left</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="product-card__content">
+    <h3 class="product-card__title">Premium Beef Steak</h3>
+    
+    <div class="product-card__price">
+      <span class="product-card__price-current">৳850/kg</span>
+      <span class="product-card__price-original">৳950</span>
+    </div>
+    
+    <div class="product-card__meta">
+      <div class="live-viewers">
+        <span class="live-viewers__dot"></span>
+        <span>18 viewing</span>
+      </div>
+      
+      <button class="btn btn-primary">Add to Cart</button>
+    </div>
+  </div>
+</div>
+
+<!-- Checkout Progress Bar (Quick Win) -->
+<div class="progress-steps" data-checkout-progress>
+  <div class="progress-step progress-step--completed">
+    <div class="progress-step__dot">✓</div>
+    <span class="progress-step__label">Cart</span>
+  </div>
+  
+  <div class="progress-step progress-step--active">
+    <div class="progress-step__dot">2</div>
+    <span class="progress-step__label">Details</span>
+  </div>
+  
+  <div class="progress-step">
+    <div class="progress-step__dot">3</div>
+    <span class="progress-step__label">Shipping</span>
+  </div>
+  
+  <div class="progress-step">
+    <div class="progress-step__dot">4</div>
+    <span class="progress-step__label">Payment</span>
+  </div>
+</div>
+
+<!-- Loading/Processing Progress Bar -->
+<div class="progress-bar">
+  <div class="progress-bar__fill" style="width: 65%;"></div>
+</div>
+<p class="text-center text-muted" style="font-size: 14px;">Processing your order... 65%</p>

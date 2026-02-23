@@ -1,0 +1,378 @@
+/* ==========================================================================
+   MEATAHOLIC - MOBILE OPTIMIZATIONS
+   Mobile-First Enhancements & Checkout Improvements
+   Version: 1.0.0
+   Target: 90%+ mobile traffic
+   ========================================================================== */
+
+/* ==========================================================================
+   MOBILE CHECKOUT - Sticky Order Summary (P3)
+   ========================================================================== */
+
+/* Safe area support for notched devices */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .order-summary--sticky {
+    padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
+  }
+}
+
+/* Sticky Summary Toggle Button */
+.order-summary-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-gray-800);
+  color: var(--color-white);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.order-summary-toggle__chevron {
+  width: 20px;
+  height: 20px;
+  transition: transform var(--transition-fast);
+}
+
+.order-summary-toggle[aria-expanded="true"] .order-summary-toggle__chevron {
+  transform: rotate(180deg);
+}
+
+/* Mobile Form Optimizations */
+@media (max-width: 767px) {
+  /* Larger touch targets */
+  .form-input,
+  .btn {
+    min-height: 48px;
+  }
+  
+  /* Prevent zoom on iOS inputs */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+  
+  /* Checkout section spacing */
+  .checkout-section {
+    padding: var(--space-4);
+    margin: 0 calc(-1 * var(--space-4));
+    border-radius: 0;
+  }
+  
+  /* Full-width buttons on mobile */
+  .btn-mobile-full {
+    width: 100%;
+  }
+  
+  /* Trust badges stack on small screens */
+  .trust-badges {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  
+  .trust-badge {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   TOUCH-FRIENDLY INTERACTIONS
+   ========================================================================== */
+
+/* Remove tap highlight on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth scrolling for carousels */
+.scroll-snap-x {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroll-snap-x::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-snap-x > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* Pull-to-refresh indicator area */
+.ptr-indicator {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray-400);
+  font-size: var(--font-size-sm);
+}
+
+/* ==========================================================================
+   MOBILE NAVIGATION - Bottom Bar Pattern
+   ========================================================================== */
+.mobile-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--color-white);
+  border-top: 1px solid var(--color-gray-200);
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: var(--z-sticky);
+}
+
+.mobile-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-gray-500);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+
+.mobile-nav__item--active {
+  color: var(--color-primary);
+}
+
+.mobile-nav__icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: var(--space-1);
+}
+
+/* Add padding to body when mobile nav is present */
+body:has(.mobile-nav) {
+  padding-bottom: 70px;
+}
+
+/* ==========================================================================
+   PRODUCT IMAGE OPTIMIZATION (P4)
+   ========================================================================== */
+
+/* Responsive images with art direction */
+.product-image {
+  position: relative;
+  width: 100%;
+}
+
+.product-image__img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  background-color: var(--color-gray-100);
+}
+
+/* Lazy loading placeholder */
+.product-image--loading {
+  background: linear-gradient(
+    90deg,
+    var(--color-gray-100) 0%,
+    var(--color-gray-200) 50%,
+    var(--color-gray-100) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Sold out overlay */
+.product-image__overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-image__sold-out {
+  background-color: var(--color-gray-800);
+  color: var(--color-white);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: var(--border-radius-sm);
+}
+
+/* ==========================================================================
+   MOBILE MODAL/DRAWER
+   ========================================================================== */
+.mobile-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  visibility: hidden;
+  opacity: 0;
+  transition: all var(--transition-base);
+}
+
+.mobile-drawer--open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.mobile-drawer__backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.mobile-drawer__content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform var(--transition-base);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.mobile-drawer--open .mobile-drawer__content {
+  transform: translateY(0);
+}
+
+.mobile-drawer__handle {
+  width: 40px;
+  height: 4px;
+  background-color: var(--color-gray-300);
+  border-radius: var(--border-radius-full);
+  margin: var(--space-3) auto;
+}
+
+/* ==========================================================================
+   SWIPE ACTIONS (Mobile List Items)
+   ========================================================================== */
+.swipe-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.swipe-item__content {
+  position: relative;
+  z-index: 1;
+  background-color: var(--color-white);
+  transition: transform var(--transition-fast);
+}
+
+.swipe-item__actions {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-4);
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* ==========================================================================
+   MOBILE-SPECIFIC ANIMATIONS
+   ========================================================================== */
+
+/* Subtle slide-up entrance */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
+/* Stagger children animations */
+.stagger-children > * {
+  opacity: 0;
+  animation: slideUp 0.4s ease-out forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+
+/* ==========================================================================
+   PERFORMANCE OPTIMIZATIONS
+   ========================================================================== */
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Content visibility for off-screen elements */
+.content-visibility {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* ==========================================================================
+   NETWORK-AWARE STYLES
+   ========================================================================== */
+
+/* Reduced data mode support */
+@media (prefers-reduced-data: reduce) {
+  .product-image__img {
+    filter: blur(0) !important;
+  }
+  
+  .product-card:hover .product-image__img {
+    transform: none;
+  }
+  
+  .progress-bar__fill::after {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   PRINT STYLES
+   ========================================================================== */
+@media print {
+  .mobile-nav,
+  .order-summary--sticky,
+  .trust-badges,
+  .urgency-banner,
+  .live-viewers {
+    display: none !important;
+  }
+}

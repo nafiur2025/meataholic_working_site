@@ -1,0 +1,96 @@
+<!-- 
+  MEATAHOLIC - Trust Badges Component
+  P1 Implementation: Checkout Trust Badges
+  
+  Usage:
+  1. Include trust-badges.js
+  2. Add data-trust-badges="checkout" to container
+  3. Or manually: new TrustBadgeManager().init(container, 'checkout')
+  
+  Variants:
+  - default: Standard badge row
+  - checkout: Prominent badges with security banner
+  - compact: Minimal badges for mobile
+-->
+
+<!-- Checkout Trust Badges (Full) -->
+<div data-trust-badges="checkout">
+  <!-- Auto-populated by trust-badges.js -->
+</div>
+
+<!-- Alternative: Static HTML (if JS fails) -->
+<div class="secure-checkout-banner">
+  <div class="secure-checkout-banner__icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+  </div>
+  <span>🔒 Your payment is secured with 256-bit SSL encryption</span>
+</div>
+
+<div class="trust-badges trust-badges--checkout">
+  <div class="trust-badge">
+    <div class="trust-badge__icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <path d="M9 12l2 2 4-4"/>
+      </svg>
+    </div>
+    <span class="trust-badge__text">SSL Secured</span>
+  </div>
+  
+  <div class="trust-badge">
+    <div class="trust-badge__icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0110 0v4"/>
+      </svg>
+    </div>
+    <span class="trust-badge__text">Secure Checkout</span>
+  </div>
+  
+  <div class="trust-badge">
+    <div class="trust-badge__icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M9 12l2 2 4-4"/>
+        <path d="M8 8h.01M16 8h.01"/>
+      </svg>
+    </div>
+    <span class="trust-badge__text">Money-Back Guarantee</span>
+  </div>
+  
+  <div class="trust-badge">
+    <div class="trust-badge__icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="1" y="3" width="15" height="13"/>
+        <path d="M16 8h4l3 3v5h-7V8z"/>
+        <circle cx="5.5" cy="18.5" r="2.5"/>
+        <circle cx="18.5" cy="18.5" r="2.5"/>
+      </svg>
+    </div>
+    <span class="trust-badge__text">Fast Delivery</span>
+  </div>
+</div>
+
+<!-- Compact Version (Mobile) -->
+<div class="trust-badges" data-trust-badges="compact">
+  <div class="trust-badge">
+    <div class="trust-badge__icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+    </div>
+    <span>SSL Secure</span>
+  </div>
+  
+  <div class="trust-badge">
+    <div class="trust-badge__icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0110 0v4"/>
+      </svg>
+    </div>
+    <span>Safe Checkout</span>
+  </div>
+</div>

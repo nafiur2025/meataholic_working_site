@@ -1,0 +1,2268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+(function(){
+    fetch('track_visit.php',{
+        method:'POST',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:`page=${encodeURIComponent(location.pathname)}&referrer=${encodeURIComponent(document.referrer)}`
+    }).then(res=>res.json()).then(data=>{
+        console.log("Visitor tracked:",data);
+    }).catch(err=>console.error(err));
+})();
+</script>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MRRTW3KH');</script>
+<!-- End Google Tag Manager -->
+  
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <title>Meataholic — Smokehouse</title>
+  <meta name="theme-color" content="#ffffff"/>
+
+  <!-- Prevent stale caching -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<meta name="theme-color" content="#ffffff">
+
+  <style>
+    :root{--bg:#fff;--text:#111;--muted:#666;--accent:#eaeaea;--ok:#0a7;--warn:#e67e22;--danger:#d33;--card:#fff;--shadow:0 8px 24px rgba(0,0,0,.08)}
+    *{box-sizing:border-box} html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:860px;margin:0 auto;padding:16px 16px 96px}
+    header{position:sticky;top:0;z-index:99;background:#fff;border-bottom:1px solid var(--accent)}
+    header .bar{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:12px 16px}
+    .logo{font-weight:800;letter-spacing:.5px;cursor:pointer}
+    .pill{border:1px solid var(--accent);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted)}
+    
+    /* CRO FIX #3: Mobile Tap Targets - Increased from 36px to 48px for WCAG compliance */
+    nav.tabs{display:flex;gap:8px;overflow:auto;padding:8px 16px;background:#fff;position:sticky;top:56px;border-bottom:1px solid var(--accent)}
+    nav.tabs button{white-space:nowrap;border:1px solid var(--accent);background:#fff;border-radius:999px;padding:12px 16px;font-size:14px;min-height:48px}
+    nav.tabs button.active{background:#111;color:#fff;border-color:#111}
+    
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}
+    @media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
+    .card{background:#fff;border:1px solid var(--accent);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;position:relative}
+    .thumb{width:100%;aspect-ratio:16/9;object-fit:cover;background:#f5f5f5;display:block}
+    .thumb.sm{aspect-ratio:1/1;width:80px;height:80px}
+    .inner{padding:14px;display:flex;flex-direction:column;gap:10px}
+    .price{font-weight:700}
+    .muted{color:var(--muted);font-size:12px}
+    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .row.space{justify-content:space-between}
+    .qty{display:flex;align-items:center;gap:6px}
+    .qty input[type=number]{width:90px;padding:6px 8px;border:1px solid var(--accent);border-radius:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 12px;border-radius:12px;border:1px solid var(--accent);background:#111;color:#fff;box-shadow:var(--shadow)}
+    .btn.secondary{background:#fff;color:#111}
+    .btn.small{padding:6px 10px;border-radius:10px;font-size:12px}
+    .btn.block{width:100%}
+    .btn[disabled]{opacity:.6;filter:grayscale(1);pointer-events:none;background:#eee;color:#999;border-color:#e5e5e5;box-shadow:none}
+    .chip{display:inline-block;font-size:11px;padding:4px 8px;border-radius:999px;border:1px solid var(--accent);color:#333}
+    .chip.warn{border-color:#f3c78c;color:#a76515}
+    .chip.sold{border-color:#f1b0b7;color:#9c2236}
+    .sticky-cart{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--accent);padding:10px 12px;display:flex;gap:10px;align-items:center;justify-content:space-between;z-index:90}
+    .sticky-cart .total{font-weight:800}
+    .sheet{background:#fff;position:fixed;inset:0;z-index:999;display:none;flex-direction:column}
+    .sheet.active{display:flex}
+    .sheet .head{padding:12px 16px;border-bottom:1px solid var(--accent);display:flex;align-items:center;justify-content:space-between}
+    .sheet .body{padding:16px;padding-bottom:140px;overflow:auto}
+    table{width:100%;border-collapse:collapse} th,td{padding:8px 6px;border-bottom:1px dashed var(--accent);text-align:left;font-size:14px}
+    .form{display:grid;gap:12px} .form input,.form select,.form textarea{width:100%;padding:10px;border-radius:12px;border:1px solid var(--accent)}
+    .note{background:#fafafa;border:1px solid var(--accent);padding:10px;border-radius:12px;font-size:13px}
+    .success{color:var(--ok);font-weight:700} .danger{color:var(--danger);font-weight:700}
+    /* Permanently hide the debug badge */
+    #devBadge,#devBadge.ok,#devBadge.bad{display:none!important;visibility:hidden!important}
+
+    /* Weight picker */
+    .weight-picker{width:100%;display:flex;flex-direction:column;gap:6px}
+    .weight-picker .meta{display:flex;justify-content:space-between;align-items:center}
+    .weight-picker .meta .val{font-weight:700}
+    .weight-picker .chips{display:flex;flex-wrap:wrap;gap:6px}
+    .weight-picker .chips .chip{cursor:pointer;user-select:none}
+    .weight-picker .row.controls{gap:10px}
+    
+    /* CRO FIX #3: Mobile Tap Targets - Quantity buttons increased to 48px */
+    .weight-picker .row.controls .btn.small{min-width:48px;height:48px;font-size:16px;font-weight:700}
+    
+    .weight-picker input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:18px;border-radius:999px;background:#eee;outline:none}
+    .weight-picker input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:28px;height:28px;border-radius:50%;background:#111;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+    .weight-picker input[type=range]::-moz-range-thumb{width:28px;height:28px;border-radius:50%;background:#111;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+
+    /* Keep all product Add buttons to the right */
+    .row.space .btn.add-to-cart{margin-left:auto}
+
+    /* CRO FIX #3: Mobile Tap Targets - Time slot chips increased to 48px */
+    .slot-grid{display:grid;gap:8px;grid-template-columns:repeat(3,1fr)}
+    @media(min-width:480px){.slot-grid{grid-template-columns:repeat(4,1fr)}}
+    .slot{position:relative}
+    .slot input{position:absolute;opacity:0;inset:0;pointer-events:none}
+    .slot label{display:block;text-align:center;padding:14px 8px;border:1px solid var(--accent);border-radius:10px;font-size:14px;background:#fff;min-height:48px}
+    .slot input:checked + label{background:#111;color:#fff;border-color:#111}
+    .slot input:disabled + label{opacity:.5;filter:grayscale(1)}
+
+    /* Upsell row: keep image + text on one line, button on the right */
+    #upsellInline .row.space{ flex-wrap:nowrap; align-items:center; }
+    #upsellInline .left{ display:flex; align-items:center; gap:12px; flex:1; min-width:0; }
+    #upsellInline .thumb.sm{ width:64px; height:64px; object-fit:cover; flex:0 0 auto; border-radius:8px; }
+    #upsellInline .title{
+      font-weight:700; line-height:1.2;
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    #upsellInline .row.space .btn{ margin-left:auto; }
+
+    .chat-fab{
+      position:fixed; right:16px; bottom:65px;
+      width:56px;height:56px;border-radius:50%; background:#fff;
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 10px 24px rgba(0,0,0,.18); z-index:1000; border:none;
+    }
+    .chat-fab img{ width:28px;height:28px; display:block; }
+    @media (min-width:768px){ .chat-fab{ bottom:24px; } }
+
+    .chat-tip{
+      position:fixed; right:16px; bottom:133px; max-width:280px;
+      padding:10px 12px 10px 12px; background:#111; color:#fff; border-radius:12px;
+      box-shadow:0 10px 24px rgba(0,0,0,.18); z-index:1000; line-height:1.3;
+    }
+    @media (min-width:768px){ .chat-tip{ bottom:92px; } }
+    .chat-tip button.close{
+      all:unset; cursor:pointer; margin-left:10px; color:#fff; opacity:.8; font-weight:700; line-height:1;
+    }
+    .chat-tip button.close:focus{ outline:2px solid #fff; outline-offset:2px; }
+    .chat-tip .text{ margin-right:8px; }
+    .chat-tip::after{
+      content:""; position:absolute; right:22px; bottom:-8px; width:0;height:0;
+      border-left:8px solid transparent; border-right:8px solid transparent; border-top:8px solid #111;
+    }
+    .chat-tip.hide{ display:none !important; }
+    .chat-tip{ padding: 12px 38px 12px 12px; }
+    .chat-tip button.close{
+      all: unset; position: absolute; top: 8px; right: 8px; width: 24px; height: 24px;
+      line-height: 24px; text-align: center; font-weight: 700; font-size: 18px; color: #fff; cursor: pointer; opacity: .9;
+    }
+    .chat-tip button.close:hover{ opacity: 1; }
+    .chat-tip .text{ display: block; }
+
+    .advance-banner{
+      background:#fff6e5; border:2px solid #f3c78c; color:#8a4b00;
+      padding:12px 14px; border-radius:12px; text-align:center; font-weight:800;
+    }
+
+    .review-strip{
+      background:#fff; border-bottom:1px solid var(--accent);
+      padding:8px 16px 10px 16px; display:flex; flex-direction:column;
+      align-items:center; gap:6px; min-height:72px;
+    }
+    .review-strip .stars-row{
+      width:100%; text-align:center; color:#FFB000; font-size:16px;
+      letter-spacing:1px; line-height:1;
+    }
+    .review-strip .review-row{
+      display:grid; grid-template-columns:40px 1fr 40px; align-items:center; gap:6px; width:100%;
+    }
+    .review-strip .review-row .nav{
+      width:40px; height:40px; border-radius:999px; border:1px solid var(--accent);
+      background:#fff; color:#111; display:flex; align-items:center; justify-content:center;
+      font-size:20px; line-height:1; cursor:pointer; user-select:none;
+    }
+    .review-strip .review-row .nav:active{ transform: translateY(1px); }
+    .review-strip .content{ text-align:center; min-height:38px; line-height:1.3; padding:0 4px; }
+    .review-strip .text{ font-size:14px; color:#111; display:block; }
+    .review-strip .who{ color:var(--muted); font-size:12px; margin-top:2px; display:block; }
+
+    /* ==== FOMO ticker (fixed above sticky cart) ==== */
+.fomo-bar{
+  position:fixed; left:0; right:0;
+  bottom: var(--fomoBottom, 56px);   /* we set this with JS to match sticky cart height */
+  z-index: 95;
+  background: linear-gradient(90deg,#fff2cc,#ffd6a5);
+  border-top: 2px solid #f3c78c;
+  border-bottom: 2px solid #f3c78c;
+  color:#111;
+  font-weight:800;
+  font-size:14px;
+  letter-spacing:.2px;
+  padding:8px 0;
+}
+.fomo-bar .fomo-track{ overflow:hidden; white-space:nowrap; }
+.fomo-bar .fomo-content{
+  display:inline-block;
+  padding-left: 100%;
+  will-change: transform;
+  animation: fomoScroll var(--fomoSpeed, 16s) linear infinite;
+}
+@keyframes fomoScroll{
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+.fomo-badge{ display:inline-block; background:#111; color:#fff; padding:2px 8px; border-radius:999px; margin:0 8px; }
+.fomo-count{ display:inline-block; padding:0 6px; border-radius:6px; background:#111; color:#fff; }
+.fomo-sep{ opacity:.5; margin:0 10px; }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .fomo-bar .fomo-content{ animation: none; padding-left:0; }
+}
+
+    nav.tabs{ top: var(--tabsTop, 56px); }
+
+/* Free delivery nudge in sticky cart */
+.sticky-cart { gap: 12px; }
+.sticky-cart .free-msg{
+  flex:1; text-align:center; font-size:12px; color:var(--warn);
+  font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+@media(min-width:480px){ .sticky-cart .free-msg{ font-size:13px; } }
+.sticky-cart .free-msg.ok{ color: var(--ok); }
+
+
+/* ===== Announcement banner ===== */
+.announce-bar{
+  background: linear-gradient(90deg,#fff7e8,#ffe9c9);
+  border-bottom: 2px solid #f3c78c;
+  color:#8a4b00;
+  font-weight:800; font-size:14px;
+  letter-spacing:.2px;
+  padding:8px 40px 8px 14px;      /* right padding for close button */
+  position: relative;
+}
+.announce-bar .close{
+  all:unset; cursor:pointer; position:absolute; right:10px; top:6px;
+  width:28px; height:28px; text-align:center; line-height:28px;
+  font-weight:800; color:#8a4b00; opacity:.85;
+}
+.announce-bar .close:hover{ opacity:1; }
+
+/* ===== Announcement (review-style) ===== */
+.announce-strip{
+  position: relative;
+  background:#fff7e8;
+  border-bottom:2px solid #f3c78c;
+  padding:8px 16px 10px 16px; /* no extra space on the right now */
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+  color:#8a4b00; font-weight:800;
+}
+/* removed .announce-strip .close styles */
+
+.announce-strip .announce-row{
+  display:grid; grid-template-columns:40px 1fr 40px;
+  align-items:center; gap:6px; width:100%;
+}
+.announce-strip .content{
+  min-height:22px; line-height:1.3; padding:0 4px;
+  display:flex; align-items:center; justify-content:center; /* center the text */
+}
+.announce-strip .text{
+  font-size:14px; color:#8a4b00; display:block; text-align:center; /* center */
+}
+@media (max-width:420px){ .announce-strip .text{ font-size:13px; } }
+
+
+/* Reuse the same nav pill style as reviews */
+.announce-strip .nav{
+  width:40px; height:40px; border-radius:999px; border:1px solid var(--accent);
+  background:#fff; color:#111; display:flex; align-items:center; justify-content:center;
+  font-size:20px; line-height:1; cursor:pointer; user-select:none;
+}
+.announce-strip .nav:active{ transform: translateY(1px); }
+@media (max-width:420px){ .announce-strip .text{ font-size:13px; } }
+
+.free-note{
+  margin-top:6px;
+  font-size:13px;
+  color:#8a4b00; /* warm hint color */
+}
+.free-note.ok{ color:#2e7d32; } /* green when unlocked */
+
+/* ===== Exit Intent Popup (Mobile Back Button) ===== */
+.exit-toast-wrap {
+  position: fixed; inset: 0; pointer-events: none; z-index: 2000;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 16px; padding-bottom: 24px;
+  background: rgba(0,0,0,0.4); /* backdrop dimming */
+  opacity: 0; transition: opacity 0.3s ease;
+}
+.exit-toast-wrap.active { opacity: 1; pointer-events: auto; }
+
+.exit-toast {
+  background: #fff;
+  border: 1px solid #111;
+  border-radius: 20px;
+  padding: 24px 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15); /* springy */
+  text-align: center;
+  position: relative;
+}
+.exit-toast-wrap.active .exit-toast { transform: translateY(0); }
+
+.exit-toast h2 { margin: 0 0 8px; font-size: 22px; font-weight: 900; color: #111; letter-spacing: -0.5px; }
+.exit-toast p { margin: 0 0 16px; color: #555; font-size: 15px; line-height: 1.4; }
+.exit-toast .coupon-display {
+  background: #fdf2f2; color: #c00; font-weight: 800; font-size: 18px;
+  padding: 10px 16px; border-radius: 12px; border: 2px dashed #eec;
+  display: inline-block; margin-bottom: 16px; letter-spacing: 1px;
+}
+.exit-toast .btn-group { display: flex; flex-direction: column; gap: 10px; }
+.exit-toast .btn-claim {
+  background: #111; color: #fff; font-size: 16px; font-weight: 700;
+  padding: 14px; border-radius: 12px; border: none; cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.exit-toast .btn-dismiss {
+  background: transparent; border: none; font-size: 14px; color: #888;
+  cursor: pointer; text-decoration: underline; padding: 8px;
+}
+.exit-toast .badge {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: #e67e22; color: #fff; font-size: 11px; font-weight: 800; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 99px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* CRO FIX #6: Bestseller Badge - "Most Popular" styling */
+.bestseller-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #e67e22;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(230, 126, 34, 0.4);
+}
+
+/* CRO FIX #7: Urgency/Scarcity Signals - "Only X left" styling */
+.scarcity-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #d33;
+  font-weight: 700;
+  margin-top: 4px;
+}
+.scarcity-dot {
+  width: 8px;
+  height: 8px;
+  background: #d33;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* CRO FIX #1: Trust Badges - Grid styling for checkout */
+.trust-badges {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 16px 0;
+  padding: 12px;
+  background: linear-gradient(135deg, #fff7e8, #ffe9c9);
+  border: 2px solid #f3c78c;
+  border-radius: 12px;
+}
+@media(min-width:640px) {
+  .trust-badges {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.trust-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #8a4b00;
+  text-align: center;
+}
+.trust-badge .icon {
+  font-size: 16px;
+}
+
+/* CRO FIX #2: Sticky Order Summary Bar */
+.sticky-checkout-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 2px solid #f3c78c;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+}
+.sticky-checkout-bar .total-section {
+  display: flex;
+  flex-direction: column;
+}
+.sticky-checkout-bar .total-label {
+  font-size: 12px;
+  color: var(--muted);
+}
+.sticky-checkout-bar .total-amount {
+  font-size: 20px;
+  font-weight: 800;
+  color: #111;
+}
+.sticky-checkout-bar .btn-place-order {
+  background: #111;
+  color: #fff;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* CRO FIX #5: Free Delivery Progress Bar */
+.free-delivery-progress {
+  margin: 12px 0;
+  padding: 12px;
+  background: #fff7e8;
+  border-radius: 12px;
+  border: 1px solid #f3c78c;
+}
+.free-delivery-progress .progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.free-delivery-progress .progress-bar {
+  width: 100%;
+  height: 12px;
+  background: #e5e5e5;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.free-delivery-progress .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #e67e22, #f3c78c);
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+.free-delivery-progress .progress-unlocked {
+  text-align: center;
+  color: var(--ok);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* CRO FIX #8: Coupon Button - Primary styling */
+#applyCouponBtn {
+  background: #111;
+  color: #fff;
+  font-weight: 700;
+  border-color: #111;
+}
+#applyCouponBtn:hover {
+  background: #333;
+}
+
+/* CRO FIX #3: Weight picker chips - 48px tap target */
+.weight-picker .chips .chip {
+  padding: 8px 12px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+  </style>
+
+  <!-- Auto-bust cache once after deploy -->
+  <script>
+    const APP_VERSION = '2025-02-8-3';
+    try {
+      var stored = localStorage.getItem('appVersion');
+      if (stored !== APP_VERSION) {
+        localStorage.setItem('appVersion', APP_VERSION);
+        var u = new URL(location.href);
+        u.searchParams.set('v', APP_VERSION);
+        location.replace(u);
+      }
+    } catch(_) {}
+  </script>
+</head>
+<body>
+
+
+
+  <div id="devBadge">Testing…</div>
+<header id="siteHeader">
+  <!-- Top announcement slider (like reviews) -->
+<div id="announceBar" class="announce-strip" role="region" aria-label="Announcements" style="display:none">
+  <div class="announce-row">
+    <button type="button" class="nav prev" id="annPrev" aria-label="Previous announcement">‹</button>
+    <div class="content">
+      <span class="text" id="annText">Loading…</span>
+    </div>
+    <button type="button" class="nav next" id="annNext" aria-label="Next announcement">›</button>
+  </div>
+</div>
+
+  <div class="bar">
+    <div class="row" style="gap:10px;align-items:center;justify-content:space-between;width:100%">
+      <!-- Left: brand -->
+      <div class="logo" id="logo">🍖 Meataholic</div>
+
+      <!-- Right: Install button (shown after beforeinstallprompt) -->
+      <button id="installBtn" class="btn small" style="display:none">Install App</button>
+    </div>
+  </div>
+</header>
+
+
+<!-- ⭐ Review slider (two lines) -->
+<div class="review-strip" id="reviewStrip" role="region" aria-label="Customer reviews">
+  <div class="stars-row" aria-hidden="false">★★★★★</div>
+  <div class="review-row">
+    <button type="button" class="nav prev" id="revPrev" aria-label="Previous review">‹</button>
+    <div class="content">
+      <span class="text" id="reviewText">Loading reviews…</span>
+      <span class="who" id="reviewWho"></span>
+    </div>
+    <button type="button" class="nav next" id="revNext" aria-label="Next review">›</button>
+  </div>
+</div>
+
+    <nav class="tabs" id="tabs"></nav>
+
+  <div class="wrap">
+    <div id="list" class="grid"></div>
+  </div>
+
+  <div class="sticky-cart" id="stickyCart">
+    <div>
+      <div class="muted" id="cartCount">0 items</div>
+      <div class="total" id="cartTotal">৳ 0</div>
+    </div>
+    <!-- NEW: free delivery progress message -->
+  <div id="freeShipMsg" class="free-msg" aria-live="polite"></div>
+
+    <button class="btn" id="viewCartBtn">View Cart</button>
+  </div>
+
+  <!-- FOMO ticker -->
+<div class="fomo-bar" id="fomoBar" role="region" aria-live="polite">
+  <div class="fomo-track">
+    <!-- duplicate content twice for a seamless loop -->
+    <div class="fomo-content">
+      🔥 <span class="fomo-badge">BRISKET20</span> 20% off Brisket — ends in
+      <span class="fomo-count" id="fomoCountdown">--:--:--</span>
+      <span class="fomo-sep">•</span> Tap "Apply" and enter <b>BRISKET20</b> at checkout!
+      <span class="fomo-sep">•</span> Don't miss out!
+      &nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+    <div class="fomo-content" aria-hidden="true">
+      🔥 <span class="fomo-badge">BRISKET20</span> 20% off Brisket — ends in
+      <span class="fomo-count">--:--:--</span>
+      <span class="fomo-sep">•</span> Tap "Apply" and enter <b>BRISKET20</b> at checkout!
+      <span class="fomo-sep">•</span> Don't miss out!
+      &nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+  </div>
+</div>
+
+
+  <!-- Cart / Checkout -->
+  <div class="sheet" id="cartSheet">
+    <div class="head">
+      <strong>Cart & Checkout</strong>
+      <button class="btn secondary" id="closeSheet">Close</button>
+    </div>
+    <div class="body">
+      <div id="cartTableWrap"></div>
+      <div id="orderTotals"></div>
+
+      <!-- 🧾 Coupon section moved here (above add-ons) -->
+      <div id="couponBox" style="margin-top:16px"></div>
+
+      <!-- Inline upsell BEFORE final checkout -->
+      <h3 style="margin:16px 0 8px">Add-ons & sauces (optional)</h3>
+      <div class="grid" id="upsellInline"></div>
+
+      <hr style="margin:16px 0;border:none;border-top:1px solid var(--accent)"/>
+
+      <div class="form" id="checkoutForm"></div>
+      <div class="note">We smoke low & slow. <b>No same-day orders</b>. Next-day delivery only (cut-off 11:59 PM Asia/Dhaka).</div>
+      
+      <!-- CRO FIX #1: Trust Badges - Added above checkout form -->
+      <div id="trustBadges" class="trust-badges" style="display:none">
+        <div class="trust-badge"><span class="icon">🔒</span>SSL Secure</div>
+        <div class="trust-badge"><span class="icon">📱</span>bKash Verified</div>
+        <div class="trust-badge"><span class="icon">🥩</span>Freshness Guaranteed</div>
+        <div class="trust-badge"><span class="icon">🚚</span>Next-Day Dhaka</div>
+      </div>
+    </div>
+    
+    <!-- CRO FIX #2: Sticky Order Summary Bar -->
+    <div id="stickyCheckoutBar" class="sticky-checkout-bar" style="display:none">
+      <div class="total-section">
+        <span class="total-label">Grand Total</span>
+        <span class="total-amount" id="stickyCheckoutTotal">৳ 0</span>
+      </div>
+      <button class="btn-place-order" id="stickyPlaceOrder">Place Order</button>
+    </div>
+  </div>
+
+  <div class="sheet" id="thankyouSheet">
+    <div class="head">
+      <strong>Order Confirmed ✅</strong>
+      <button class="btn secondary" id="closeThankyou">Close</button>
+    </div>
+    <div class="body">
+      <p class="success" id="tyHeadline">Order No. — is now confirmed!</p>
+      <div id="tySummary"></div>
+      <div id="tyAdvance" class="advance-banner" style="display:none"></div>
+      <div style="text-align:center;margin:12px 0 4px" class="muted">
+        Need help with your order? Tap Messenger and mention your order number.
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px">
+        <button class="btn" id="openChatBtn">Message us on Messenger</button>
+      </div>
+      <button class="btn secondary" id="startNewOrder">Back to Menu</button>
+    </div>
+  </div>
+
+  <!-- EXIT INTENT POPUP (Back Button) -->
+  <div class="exit-toast-wrap" id="exitIntentPopup">
+    <div class="exit-toast">
+      <div class="badge">Wait! First Order Deal</div>
+      <h2>Get 10% OFF?</h2>
+      <p>Before you go, here is a special discount just for you. Don't miss out!</p>
+      <div class="coupon-display">CODE: NEW25</div>
+      <div class="btn-group">
+        <button class="btn-claim" id="exitClaimBtn">Claim 10% Off Now</button>
+        <button class="btn-dismiss" id="exitDismissBtn">No thanks, I'll pay full price</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+/** ======= CONFIG ======= **/
+const APPS_SCRIPT_URL = "https://meataholicbd.com/php-frontend/save_order.php"; // replace if you redeploy
+
+const POLICY = { MIN_ORDER:0, DELIVERY_FEE:150, FREE_DELIVERY_MIN:1500, ADVANCE_MIN:5000, ADVANCE_PERCENT:0.30, CUTOFF_HOUR_24H:23, CUTOFF_MINUTE:59 };
+
+// CRO FIX #7: Urgency/Scarcity - Stock levels for specific products
+const STOCK_LEVELS = {
+  brisket: 5,
+  short_ribs: 3,
+  brisket_sandwich: 8,
+  tomahawk: 4
+};
+
+// === FOMO countdown (Asia/Dhaka) ===
+const FOMO_DEADLINE_ISO = '2025-10-31T22:00:00+06:00'; // Fri, 29 Aug 2025, 10:00pm Dhaka
+
+function formatCountdown(ms){
+  if (ms <= 0) return '00:00:00';
+  var sec = Math.floor(ms/1000);
+  var d = Math.floor(sec/86400); sec -= d*86400;
+  var h = Math.floor(sec/3600);  sec -= h*3600;
+  var m = Math.floor(sec/60);    sec -= m*60;
+  var hh = String(h).padStart(2,'0');
+  var mm = String(m).padStart(2,'0');
+  var ss = String(sec).padStart(2,'0');
+  return (d>0 ? (d+'d ') : '') + hh + ':' + mm + ':' + ss;
+}
+
+function startFomoCountdown(){
+  var el = document.getElementById('fomoCountdown');
+  var bar = document.getElementById('fomoBar');
+  if (!bar) return;
+  var target = new Date(FOMO_DEADLINE_ISO);
+
+  function tick(){
+    var now = dhakaNow();                  // you already have dhakaNow()
+    var ms = target - now;
+    if (el) el.textContent = formatCountdown(ms);
+    if (ms <= 0){
+      // Offer ended — show a wrap-up then hide the bar
+      if (el) el.textContent = 'Offer ended';
+      bar.style.background = '#f7f7f7';
+      bar.style.opacity = '0.92';
+      // Optional: hide after a short delay
+      setTimeout(function(){ bar.style.display = 'none'; recalcFixedBottoms(); }, 6000);
+      clearInterval(timer);
+    }
+  }
+  tick();
+  var timer = setInterval(tick, 1000);
+}
+
+// Keep the bar exactly above sticky cart
+function recalcFixedBottoms(){
+  var sc = document.getElementById('stickyCart');
+  var fb = document.getElementById('fomoBar');
+  if (!fb || !sc) return;
+  var h = sc.offsetHeight || 56;     // sticky cart height
+  fb.style.bottom = h + 'px';
+
+  // Optional: lift the Messenger FAB and tip so they don't overlap
+  var mf = document.getElementById('messengerFab');
+  if (mf) mf.style.bottom = (h + 65) + 'px';
+  var tip = document.getElementById('chatTip');
+  if (tip) tip.style.bottom = (h + 133) + 'px';
+}
+
+
+// ===== Coupons / Promotions =====
+const PROMOS = {
+  BRISKET20: {
+    label: "20% off Brisket",
+    type: "percent",
+    percent: 20,
+    appliesToIds: ["brisket"],
+    starts: "2025-08-24",
+    ends:   "2025-10-31"
+  },
+  FREEDEL: {
+    label: "Free Delivery",
+    type: "delivery",
+    freeDelivery: true,
+    starts: "2025-08-24",
+    ends:   "2025-09-30"
+  },
+  // NEW — 10% off entire order
+  NEW25: {
+    label: "10% off entire order",
+    type: "percent",
+    percent: 10,
+    // no appliesToIds => whole basket
+    starts: "2025-10-13",
+    ends:   ""   // empty means no end date
+  }  
+};
+var activeCoupon = null;
+
+/* Optional Drive image overrides */
+let cloudImages = {
+  // brisket: "https://drive.google.com/uc?export=view&id=FILE_ID",
+};
+
+const PLACEHOLDER_IMAGES = {
+  brisket:"https://drive.google.com/thumbnail?id=1XFgtg_amoTZfSBRYUh3QKX_x1LHPziGi&sz=w1600",
+  short_ribs:"https://drive.google.com/thumbnail?id=1054pQ5McohtTy_KKE9XkCOOjOCdWsCed&sz=w1600",
+  dino_2:"https://drive.google.com/thumbnail?id=1z7PLP7MZW0byqT8M2UuilfwpXdAgq8nb&sz=w1600",
+  dino_3:"https://drive.google.com/thumbnail?id=1z7PLP7MZW0byqT8M2UuilfwpXdAgq8nb&sz=w1600",
+  tomahawk:"https://drive.google.com/thumbnail?id=1r0LThfyv4Z7NQ_enpRfd6Hs4LH4o3c1V&sz=w1600",
+  chicken:"https://drive.google.com/thumbnail?id=1Ce156ORNocNVh8_izIBY0udXd0YDCWRG&sz=w1600",
+  jacket_potato:"https://drive.google.com/thumbnail?id=1UBIiZjKf1kRs6kZ6KsyDYjLA4W3a03YD&sz=w1600",
+  hotdog:"https://drive.google.com/thumbnail?id=1M2ghsUFCdHJSflsfcPUKW7pLqAUDqmyU&sz=w1600",
+  bangers:"https://drive.google.com/thumbnail?id=1bndMcg5jU02HCctYRAjIfm84hSLMZ9MM&sz=w1600",
+  lasagne_big:"https://drive.google.com/thumbnail?id=123vVpELuSrEudwOVm_5LXIRDTErxp-ZC&sz=w1600",
+  lasagne_medium:"https://drive.google.com/thumbnail?id=123vVpELuSrEudwOVm_5LXIRDTErxp-ZC&sz=w1600",
+  brisket_sandwich:"https://drive.google.com/thumbnail?id=1CLg2P98vlbN2mw5tJXquV0BdPBSKQ3ny&sz=w1600",
+  burger:"https://drive.google.com/thumbnail?id=1P1YqgojJTHXid5RxI9RH6jx5POIkOFDA&sz=w1600",
+  buns:"https://drive.google.com/thumbnail?id=1aMnxL4BsW5qReQwykzjpxM8Syxv4G9EA&sz=w1600",
+  s_red_grape_jus:"https://drive.google.com/thumbnail?id=1ZyBGTDIIq6_tZp_7XN3qGUPw9_x1ajCr&sz=w1600",
+  s_bbq:"https://drive.google.com/thumbnail?id=1OSByfGLoGBAloJ071SCaircNgoBA7m44&sz=w1600",
+  s_cheese:"https://drive.google.com/thumbnail?id=1xQ-Q9Cese5v55ooVUY9QokBLCeI8wSoR&sz=w1600",
+  s_chilli_butter_cheese:"https://drive.google.com/thumbnail?id=1lnqX-x1fZ9gah8QVNVCN2DaDHCEEaioE&sz=w1600",
+  s_mushroom:"https://drive.google.com/thumbnail?id=1v8ryWEr2Bijjs0cCwQOjMh7RF8yKHlmc&sz=w1600",
+  s_chili_dog:"https://drive.google.com/thumbnail?id=1ZyBGTDIIq6_tZp_7XN3qGUPw9_x1ajCr&sz=w1600",
+  side_mash_small:"https://drive.google.com/thumbnail?id=1ZqC2KlZUrg5RFG2kWt0DusHcaLHlwaTs&sz=w1600",
+  side_mash_big:"https://drive.google.com/thumbnail?id=1k4e3N1i5wMvHROaAcMVl5iKex-T18-hO&sz=w1600",
+  extra_sausage:"https://drive.google.com/thumbnail?id=1nYbJMtbydMQ6M3N0nMj4ugwCB3pKC_gA&sz=w1600",
+  brisket_soup:"https://drive.google.com/thumbnail?id=1QBJIJrCdSz2ciuN_SoVn7OuoGC_wMTmM&sz=w1600",
+  default:"https://placehold.co/1200x675?text=Meataholic"
+};
+
+/** ======= MENU ======= **/
+const MENU = [
+  { id:"brisket_sandwich", name:"Brisket Sandwich", category:"Casual Bites & Comfort Food", price:700, unit:"perPiece", min:1, available:true, description:"Smoked brisket, BBQ sauce, wasabi mayo & slaw.", img:PLACEHOLDER_IMAGES.brisket_sandwich, addons:[{ id:"bs_cheese", name:"Cheese sauce (promo: FREE)", price:0 }, { id:"bs_meat", name:"Extra meat (+25g)", price:160 }] },
+  { id:"brisket", name:"Smoked Brisket (Boneless)", category:"Smokehouse Classics", price:688, unit:"per100g", step:100, min:300, available:true, description:"Melt-in-your-mouth brisket, smoked low & slow.", notes:"Free sides only with 1kg+ (4 mash + 2 sauces).", img:PLACEHOLDER_IMAGES.brisket },
+  { id:"brisket_soup", name:"Spicy Brisket Soup", category:"Casual Bites & Comfort Food", price:750, unit:"perPiece", min:1, available:true, description:"A deep, spicy broth smoked & simmered for 16 hours — loaded with smoked brisket slices, juicy meatballs, and noodles.", img:PLACEHOLDER_IMAGES.brisket_soup, addons:[{ id:"bs_meat", name:"Extra meat (+25g)", price:160 }] },
+  { id:"short_ribs", name:"Smoked Short Ribs (Bone-in)", category:"Smokehouse Classics", price:2440, unit:"per500g", step:500, min:500, available:true, description:"Thick-cut, smoky and rich with bone-in flavour.", notes:"1kg+ includes 2 mash + 2 sauces.", img:PLACEHOLDER_IMAGES.short_ribs },
+  { id:"chicken", name:"Whole Smoked Chicken", category:"Smokehouse Classics", price:880, unit:"perPiece", min:1, available:true, description:"Juicy, smoky — perfect for sharing.", notes:"Includes yellow rice + choose Mushroom Peppercorn or Sweet & Spicy BBQ.", img:PLACEHOLDER_IMAGES.chicken },  
+  { id:"lasagne_medium", name:"Lasagne — Medium", category:"Casual Bites & Comfort Food", price:850, unit:"fixed", min:1, available:true, description:"Rich, cheesy layers baked to perfection.", img:PLACEHOLDER_IMAGES.lasagne_medium },
+  { id:"tomahawk", name:"Tomahawk Ribeye Steak", category:"Smokehouse Classics", price:2940, unit:"per500g", step:500, min:500, available:true, description:"Smoked and served medium to medium-rare.", notes:"Free sides only with 1kg+ (4 mash + 2 sauces).", img:PLACEHOLDER_IMAGES.tomahawk },
+  { id:"side_mash_small", name:"Mashed Potatoes — Small (serves 2)", category:"Sides & Sauces", price:240, unit:"fixed", min:1, available:true, img:PLACEHOLDER_IMAGES.side_mash_small },
+  
+  { id:"jacket_potato", name:"Smoked Jacket Chilli Cheese Potatoes", category:"Casual Bites & Comfort Food", price:280, unit:"perPiece", min:1, available:true, description:"Loaded with chilli con carne, beans and cheese.", img:PLACEHOLDER_IMAGES.jacket_potato },
+  { id:"hotdog", name:"Meataholic Signature Hotdog", category:"Casual Bites & Comfort Food", price:400, unit:"perPiece", min:1, available:false, description:"Soft buns, wasabi mayo & crispy onions. (Unavailable)", img:PLACEHOLDER_IMAGES.hotdog },
+  { id:"bangers", name:"Bangers & Mash", category:"Casual Bites & Comfort Food", price:450, unit:"perPiece", min:1, available:false, description:"1 pc 450 / 2 pc 800. (Unavailable)", img:PLACEHOLDER_IMAGES.bangers },
+  { id:"lasagne_big", name:"Lasagne — Big (feeds 4)", category:"Casual Bites & Comfort Food", price:1500, unit:"fixed", min:1, available:true, description:"Rich, cheesy layers baked to perfection.", img:PLACEHOLDER_IMAGES.lasagne_big },
+  { id:"burger", name:"Signature Smoked Burger", category:"Casual Bites & Comfort Food", price:650, unit:"perPiece", min:1, available:false, description:"1-inch patty with roasted tomatoes & mushrooms. (Unavailable)", img:PLACEHOLDER_IMAGES.burger },
+  { id:"buns", name:"Just Smoked Buns (2 pcs)", category:"Casual Bites & Comfort Food", price:120, unit:"fixed", min:1, available:true, img:PLACEHOLDER_IMAGES.buns },
+
+  { id:"s_red_grape_jus", name:"Red Grape Jus", category:"Sides & Sauces", price:100, unit:"perPiece", min:1, available:true, img:PLACEHOLDER_IMAGES.s_red_grape_jus },
+  { id:"s_bbq", name:"BBQ Sauce", category:"Sides & Sauces", price:80, unit:"perPiece", min:1, available:true, img:PLACEHOLDER_IMAGES.s_bbq },
+  { id:"s_cheese", name:"Cheese Sauce", category:"Sides & Sauces", price:200, unit:"perPiece", min:1, available:true, img:PLACEHOLDER_IMAGES.s_cheese },
+  { id:"s_chilli_butter_cheese", name:"Chilli Butter Cheese", category:"Sides & Sauces", price:150, unit:"perPiece", min:1, available:true, img:PLACEHOLDER_IMAGES.s_chilli_butter_cheese },
+  { id:"s_mushroom", name:"Mushroom Sauce", category:"Sides & Sauces", price:80, unit:"perPiece", min:1, available:true, img:PLACEHOLDER_IMAGES.s_mushroom },
+  { id:"s_chili_dog", name:"Chili Dog Sauce", category:"Sides & Sauces", price:150, unit:"perPiece", min:1, available:true, img:PLACEHOLDER_IMAGES.s_chili_dog },
+  { id:"side_mash_big", name:"Mashed Potatoes — Big (serves 4)", category:"Sides & Sauces", price:450, unit:"fixed", min:1, available:true, img:PLACEHOLDER_IMAGES.side_mash_big },
+  { id:"extra_sausage", name:"Extra 1 pc Sausage", category:"Sides & Sauces", price:350, unit:"perPiece", min:1, available:false, img:PLACEHOLDER_IMAGES.extra_sausage },
+];
+
+const UPSELL_IDS = ["s_bbq","s_cheese","side_mash_small","buns"];
+
+/** ======= helpers & state ======= **/
+const fmt = n => "৳ " + Math.round(n).toLocaleString("en-BD");
+function dhakaNow(){ var now = new Date(); var p = new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dhaka',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(now).reduce(function(a,b){a[b.type]=b.value;return a;},{}); return new Date(p.year+"-"+p.month+"-"+p.day+"T"+p.hour+":"+p.minute+":"+p.second); }
+ function minDeliveryDateISO(){
+   // Helper: format YYYY-MM-DD in Asia/Dhaka (no UTC conversion)
+   function fmtYMD_Dhaka(d){
+     const parts = new Intl.DateTimeFormat('en-CA',{ // en-CA gives YYYY-MM-DD
+       timeZone:'Asia/Dhaka', year:'numeric', month:'2-digit', day:'2-digit'
+     }).formatToParts(d).reduce((a,p)=>{ a[p.type]=p.value; return a; },{});
+     return `${parts.year}-${parts.month}-${parts.day}`;
+   }
+   const now = dhakaNow();
+   const cutoffHour = Number(POLICY.CUTOFF_HOUR_24H || 20);
+   const cutoffMin  = Number(POLICY.CUTOFF_MINUTE || 0);
+   const nowMins    = now.getHours()*60 + now.getMinutes();
+   const cutMins    = cutoffHour*60 + cutoffMin;
+   // Next-day default; after cutoff ⇒ day-after-next
+   const base = new Date(now);
+   base.setDate(base.getDate() + (nowMins >= cutMins ? 2 : 1));
+   return fmtYMD_Dhaka(base);
+ }
+function findItem(id){ return MENU.find(function(x){return x.id===id;}); }
+function resolveImageSrc(id){
+  if(cloudImages && cloudImages[id]) return cloudImages[id];
+  var it = findItem(id);
+  if(it && it.img) return it.img;
+  return PLACEHOLDER_IMAGES[id] || PLACEHOLDER_IMAGES.default;
+}
+
+
+
+// === GA4 Ecommerce (via dataLayer) ===
+window.dataLayer = window.dataLayer || [];
+const GA4_CURRENCY = 'BDT';
+
+function dlItemFromMenu(it){
+  return {
+    item_id: it.id,
+    item_name: it.name,
+    item_category: it.category || 'Other',
+    price: Number(it.price) || 0,
+    currency: GA4_CURRENCY
+  };
+}
+
+function dlItemFromCart(x){
+  const line = Math.round(typeof lineTotal === 'function' ? lineTotal(x) : 0);
+  let variant = '';
+  if (x.unit === 'per100g' || x.unit === 'per500g') variant = (x.weight||0)+'g';
+  else if (x.unit === 'perPiece') variant = (x.qty||1)+' pc';
+  else if (x.unit === 'fixed') variant = 'fixed';
+  return {
+    item_id: x.id,
+    item_name: x.name,
+    item_category: (typeof findItem==='function' && findItem(x.id) && findItem(x.id).category) ? findItem(x.id).category : 'Other',
+    item_variant: variant,
+    price: line,
+    quantity: 1,
+    currency: GA4_CURRENCY
+  };
+}
+
+function dlEcom(eventName, payload){
+  window.dataLayer.push({ ecommerce: null });
+  window.dataLayer.push(Object.assign({ event: eventName }, payload));
+}
+
+/* ======= Weight-picker helpers ======= */
+function gramsToKgText(g){ if(g % 1000 === 0) return (g/1000) + " kg"; return (g/1000).toFixed(1).replace(/\.0$/,'') + " kg"; }
+function priceForWeight(item, g){ if(item.unit === "per100g") return item.price * (g/100); if(item.unit === "per500g") return item.price * (g/500); return 0; }
+function clampStep(v, step, min){ var rounded = Math.round(v/step)*step; return Math.max(min, rounded); }
+function createWeightPicker(item){
+  var step = item.step || (item.unit==="per100g" ? 100 : 500);
+  var min  = Math.max(step, item.min || step);
+  var max  = Math.max(min*5, item.unit==="per100g" ? 3000 : 5000);
+  var weight = min;
+
+  var wrap = document.createElement("div"); wrap.className = "weight-picker";
+  var meta = document.createElement("div"); meta.className="meta";
+  meta.innerHTML = '<div class="muted">Weight</div><div><span class="val" id="wpVal"></span><span class="muted" id="wpPrice" style="margin-left:6px"></span></div>';
+
+  var controls = document.createElement("div"); controls.className="row controls";
+  var minus = document.createElement("button"); minus.className="btn secondary small"; minus.textContent="–";
+  var plus  = document.createElement("button"); plus.className="btn secondary small"; plus.textContent="+";
+  var range = document.createElement("input"); range.type="range"; range.min=min; range.max=max; range.step=step; range.value=weight;
+  controls.appendChild(minus); controls.appendChild(range); controls.appendChild(plus);
+
+  var chips = document.createElement("div"); chips.className="chips";
+  var candidates = [min, 500, 1000, 1500, 2000];
+  var seen = {};
+  for(var i=0;i<candidates.length;i++){
+    var g = candidates[i];
+    if(g < min || g > max) continue;
+    if(seen[g]) continue; seen[g] = true;
+    var b = document.createElement("button"); b.className="chip"; b.dataset.jump=g;
+    b.textContent = (g>=1000 ? gramsToKgText(g) : g+" g");
+    b.onclick = (function(val){ return function(){ setWeight(val); }; })(g);
+    chips.appendChild(b);
+  }
+
+  var note = document.createElement("div"); note.className="muted"; note.id="wpNote";
+
+  wrap.appendChild(meta);
+  wrap.appendChild(chips);
+  wrap.appendChild(controls);
+  wrap.appendChild(note);
+
+  function setWeight(g){ weight = clampStep(g, step, min); range.value = weight; updateMeta(); }
+  function updateMeta(){
+    meta.querySelector("#wpVal").textContent = weight + " g (" + gramsToKgText(weight) + ")";
+    var est = priceForWeight(item, weight); if(item.discountPct) est *= (1 - item.discountPct);
+    meta.querySelector("#wpPrice").textContent = "≈ " + fmt(est);
+    if((item.notes||"").match(/1kg\+/i)){ note.textContent = (weight >= 1000) ? "Eligible for 1kg+ freebies 🎁" : "Order 1kg+ to get freebies 🎁"; } else { note.textContent = ""; }
+  }
+  range.oninput = function(){ setWeight(parseInt(range.value,10)); };
+  minus.onclick  = function(){ setWeight(weight - step); };
+  plus.onclick   = function(){ setWeight(weight + step); };
+  updateMeta();
+
+  return { el: wrap, getWeight: function(){ return weight; } };
+}
+
+/* ======= Robust POST helper ======= */
+async function postToAPI(params){
+  if(!APPS_SCRIPT_URL){
+    alert("Missing endpoint URL. Please set APPS_SCRIPT_URL.");
+    return false;
+  }
+  var body = (params instanceof URLSearchParams) ? params : new URLSearchParams(params);
+  var isFileOrigin = (location.protocol === 'file:' || location.origin === 'null');
+
+  if ('sendBeacon' in navigator) {
+    try {
+      var data = new Blob([body.toString()], { type: 'application/x-www-form-urlencoded;charset=UTF-8' });
+      var ok = navigator.sendBeacon(APPS_SCRIPT_URL, data);
+      if (ok) return true;
+    } catch (_) {}
+  }
+
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      mode: isFileOrigin ? "no-cors" : "cors",
+      headers: { "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8" },
+      body: body.toString()
+    });
+    return true;
+  } catch (err) {
+    if (!isFileOrigin) {
+      try {
+        await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8" },
+          body: body.toString()
+        });
+        return true;
+      } catch (err2) {
+        console.error("Fallback also failed:", err2);
+        return false;
+      }
+    }
+    console.error("Primary POST failed:", err);
+    return false;
+  }
+}
+
+/** ======= custom tab order ======= **/
+const CATEGORY_ORDER = [
+  "Smokehouse Classics",
+  "Casual Bites & Comfort Food",
+  "Sides & Sauces"
+];
+const allCats = Array.from(new Set(MENU.map(function(x){ return (x.category || "Other").trim(); })));
+const ordered = CATEGORY_ORDER.filter(function(c){ return allCats.indexOf(c) > -1; });
+const extras = allCats.filter(function(c){ return CATEGORY_ORDER.indexOf(c) === -1; }).sort();
+var categories = ["All"].concat(ordered, extras);
+var activeTab = "All";
+var cart = [];
+var devTap = 0;
+
+/** ======= elements ======= **/
+var tabsEl = document.getElementById("tabs");
+var listEl = document.getElementById("list");
+var cartCountEl = document.getElementById("cartCount");
+var cartTotalEl = document.getElementById("cartTotal");
+var freeShipMsgEl = document.getElementById("freeShipMsg");
+var cartSheet = document.getElementById("cartSheet");
+var viewCartBtn = document.getElementById("viewCartBtn");
+var closeSheet = document.getElementById("closeSheet");
+var cartTableWrap = document.getElementById("cartTableWrap");
+var orderTotals = document.getElementById("orderTotals");
+var couponBox = document.getElementById("couponBox");       // <— NEW
+var upsellInline = document.getElementById("upsellInline");
+var checkoutForm = document.getElementById("checkoutForm");
+var thankyouSheet = document.getElementById("thankyouSheet");
+var devBadge = document.getElementById("devBadge");
+
+// CRO FIX #2: Sticky checkout bar elements
+var stickyCheckoutBar = document.getElementById("stickyCheckoutBar");
+var stickyCheckoutTotal = document.getElementById("stickyCheckoutTotal");
+var stickyPlaceOrder = document.getElementById("stickyPlaceOrder");
+
+// CRO FIX #1: Trust badges element
+var trustBadges = document.getElementById("trustBadges");
+
+document.getElementById("logo").addEventListener("click", function () {
+  devTap++;
+  if (devTap >= 7) {
+    var totalCards = listEl.querySelectorAll(".card").length;
+    devBadge.textContent = "Rendered " + totalCards + " / Menu " + MENU.length;
+    devBadge.className = (totalCards === MENU.length ? "ok" : "bad");
+  }
+});
+
+/** ======= UI ======= **/
+function buildTabs(){
+  tabsEl.innerHTML = "";
+  for(var i=0;i<categories.length;i++){
+    (function(t){
+      var b = document.createElement("button");
+      b.textContent = t;
+      b.className = (t===activeTab ? "active":"");
+      b.onclick = function(){ activeTab=t; buildTabs(); buildList(); };
+      tabsEl.appendChild(b);
+    })(categories[i]);
+  }
+}
+function renderCard(item){
+  var card = document.createElement("div");
+  card.className = "card";
+
+  // CRO FIX #6: Bestseller Badge - Add to Brisket card
+  if (item.id === "brisket") {
+    var bestsellerBadge = document.createElement("div");
+    bestsellerBadge.className = "bestseller-badge";
+    bestsellerBadge.textContent = "🔥 Most Popular";
+    card.appendChild(bestsellerBadge);
+  }
+
+  var img = document.createElement("img");
+  img.className = "thumb";
+  img.alt = item.name;
+  img.loading = "lazy";
+  img.src = resolveImageSrc(item.id);
+  img.onerror = function(){ console.warn('Image failed for', item.id, '→', img.src); img.src = PLACEHOLDER_IMAGES.default; };
+
+// GA4: view_item when the card enters the viewport
+(function(){
+  if (!('IntersectionObserver' in window)) {
+    try { dlEcom('view_item', { ecommerce: { currency: GA4_CURRENCY, value: Number(item.price)||0, items: [dlItemFromMenu(item)] } }); } catch(_){}
+    return;
+  }
+  let seen = false;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!seen && e.isIntersecting) {
+        seen = true;
+        try { dlEcom('view_item', { ecommerce: { currency: GA4_CURRENCY, value: Number(item.price)||0, items: [dlItemFromMenu(item)] } }); } catch(_){}
+        io.disconnect();
+      }
+    });
+  }, { root:null, threshold:0.25 });
+  io.observe(img);
+})();
+
+
+
+  var inner = document.createElement("div"); inner.className = "inner";
+
+  var priceLine = document.createElement("div");
+  priceLine.innerHTML = '<div class="row space">'+
+      '<div class="price">'+fmt(item.price)+' '+(item.unit==='per100g'?' /100g':item.unit==='per500g'?' /500g':'')+'</div>'+
+      (item.discountPct?'<span class="chip warn">'+(item.discountPct*100)+'% off</span>':'')+
+      (item.available? '':'<span class="chip sold">Sold Out</span>')+
+    '</div>';
+
+  var name = document.createElement("div"); name.innerHTML = "<strong>"+item.name+"</strong>";
+  var desc = document.createElement("div"); desc.className = "muted"; desc.textContent = item.description || "";
+  var note = document.createElement("div"); note.className = "muted";
+  note.textContent =
+    (item.unit==="per100g" ? "Per 100g" :
+     item.unit==="per500g" ? "Per 500g" :
+     item.unit==="perPiece" ? "Per piece" : "Fixed price") +
+    (item.notes? " • "+item.notes:"");
+
+  // CRO FIX #7: Urgency/Scarcity - Add stock indicator for specific products
+  var scarcityEl = null;
+  if (STOCK_LEVELS[item.id] && item.available) {
+    scarcityEl = document.createElement("div");
+    scarcityEl.className = "scarcity-indicator";
+    scarcityEl.innerHTML = '<span class="scarcity-dot"></span>Only ' + STOCK_LEVELS[item.id] + ' left';
+  }
+
+  var controls = document.createElement("div"); controls.className = "row space";
+  var qtyInput = null; var addonsWrap = null;
+
+  if(item.available){
+    if(item.unit==="per100g" || item.unit==="per500g"){
+      var wp = createWeightPicker(item);
+      controls.appendChild(wp.el);
+      qtyInput = { value: wp.getWeight() };
+      qtyInput.__getWeight = wp.getWeight;
+    } else {
+      var qtyWrap = document.createElement("div"); qtyWrap.className = "qty";
+      var lbl = document.createElement("span"); lbl.className = "label"; lbl.textContent = "Qty";
+      qtyInput = document.createElement("input"); qtyInput.type = "number"; qtyInput.min = item.min; qtyInput.step = 1; qtyInput.value = item.min; qtyInput.inputMode = "numeric";
+      qtyWrap.appendChild(lbl); qtyWrap.appendChild(qtyInput); controls.appendChild(qtyWrap);
+    }
+    if(item.addons && item.addons.length){
+      addonsWrap = document.createElement("div"); addonsWrap.className = "row";
+      for(var i=0;i<item.addons.length;i++){
+        var a = item.addons[i];
+        var id = item.id+"_"+a.id;
+        var cb = document.createElement("input"); cb.type="checkbox"; cb.id=id; cb.value=a.id;
+        var lbl2 = document.createElement("label"); lbl2.setAttribute("for", id);
+        lbl2.className = "chip"; lbl2.textContent = a.name + (a.price? " ("+fmt(a.price)+")":"");
+        addonsWrap.appendChild(cb); addonsWrap.appendChild(lbl2);
+      }
+      controls.appendChild(addonsWrap);
+    }
+  }
+
+  var addBtn = document.createElement("button"); addBtn.className = "btn add-to-cart"; addBtn.textContent = "Add to cart";
+
+  if(!item.available){
+    addBtn.disabled = true; addBtn.title = "Unavailable today";
+  } else {
+    addBtn.onclick = function(){
+      // 1. Explicitly arm exit intent (Mobile/iOS Fix)
+      if (typeof window.armExitIntent === 'function') window.armExitIntent();
+
+      if(item.unit==="per100g" || item.unit==="per500g"){
+        var w = (qtyInput && qtyInput.__getWeight) ? qtyInput.__getWeight() : Number(qtyInput && qtyInput.value);
+        if(isNaN(w) || w < item.min){ alert("Please choose a valid weight (min "+item.min+"g)."); return; }
+        var entry = {
+          id:item.id, name:item.name, basePrice:item.price, unit:item.unit,
+          weight:w, qty:1, discountPct:item.discountPct||0, addons:[]
+        };
+        if(addonsWrap){
+          var checks = addonsWrap.querySelectorAll("input[type=checkbox]:checked");
+          for(var j=0;j<checks.length;j++){
+            var addDef = null;
+            for(var k=0;k<item.addons.length;k++){ if(item.addons[k].id===checks[j].value){ addDef=item.addons[k]; break; } }
+            if(addDef) entry.addons.push({id:addDef.id, name:addDef.name, price:addDef.price});
+          }
+        }
+        cart.push(entry);
+  try { dlEcom('add_to_cart', { ecommerce: { currency: GA4_CURRENCY, value: Math.round(lineTotal(entry)), items: [dlItemFromCart(entry)] } }); } catch(_){}
+  updateCartUI(); return;
+      }
+      var qty = Number(qtyInput.value);
+      if(isNaN(qty) || qty < item.min){ alert("Please enter a valid quantity (min "+item.min+")."); return; }
+      var entry2 = { id:item.id, name:item.name, basePrice:item.price, unit:item.unit, weight:null, qty:qty, discountPct:item.discountPct||0, addons:[] };
+      if(addonsWrap){
+        var checks2 = addonsWrap.querySelectorAll("input[type=checkbox]:checked");
+        for(var j2=0;j2<checks2.length;j2++){
+          var addDef2 = null;
+          for(var k2=0; k2<item.addons.length; k2++){ if(item.addons[k2].id===checks2[j2].value){ addDef2=item.addons[k2]; break; } }
+          if(addDef2) entry2.addons.push({id:addDef2.id, name:addDef2.name, price:addDef2.price});
+        }
+      }
+      cart.push(entry2);
+  try { dlEcom('add_to_cart', { ecommerce: { currency: GA4_CURRENCY, value: Math.round(lineTotal(entry2)), items: [dlItemFromCart(entry2)] } }); } catch(_){}
+  updateCartUI();
+    };
+  }
+  controls.appendChild(addBtn);
+
+  card.appendChild(img);
+  inner.appendChild(priceLine);
+  inner.appendChild(name);
+  inner.appendChild(desc);
+  inner.appendChild(note);
+  // CRO FIX #7: Append scarcity indicator if exists
+  if (scarcityEl) inner.appendChild(scarcityEl);
+  inner.appendChild(controls);
+  card.appendChild(inner);
+
+  return card;
+}
+function buildList(){
+  listEl.innerHTML = "";
+  var items = (activeTab==="All") ? MENU.slice() : MENU.filter(function(x){ return (x.category||"Other").trim()===activeTab; });
+  for(var i=0;i<items.length;i++){ listEl.appendChild(renderCard(items[i])); }
+}
+function updateCartUI(){
+  var count = cart.reduce(function(n,x){ return n + ((x.unit==="perPiece"||x.unit==="fixed") ? x.qty : 1); }, 0);
+  var subtotal = cart.reduce(function(sum,x){ return sum + lineTotal(x); }, 0);
+  cartCountEl.textContent = count + (count===1? " item":" items");
+  cartTotalEl.textContent = fmt(subtotal);
+
+  // NEW: refresh free-delivery message
+  updateFreeShipMsg();
+  
+  // CRO FIX #2: Update sticky checkout bar if visible
+  updateStickyCheckoutBar();
+}
+function lineTotal(x){
+  var base = 0;
+  if(x.unit==="per100g") base = x.basePrice * (x.weight/100);
+  else if(x.unit==="per500g") base = x.basePrice * (x.weight/500);
+  else if(x.unit==="perPiece"||x.unit==="fixed") base = x.basePrice * x.qty;
+  var addons = 0;
+  if(x.addons && x.addons.length) addons = x.addons.reduce(function(s,a){ return s + (a.price||0); }, 0);
+  var line = base + addons;
+  if(x.discountPct) line = line * (1 - x.discountPct);
+  return line;
+}
+
+// CRO FIX #2: Update sticky checkout bar totals
+function updateStickyCheckoutBar() {
+  if (!stickyCheckoutTotal) return;
+  var totals = computeTotalsWithCoupon ? computeTotalsWithCoupon() : {
+    subtotal: cart.reduce((s,x) => s + lineTotal(x), 0),
+    couponSavings: 0,
+    delivery: 0,
+    grand: cart.reduce((s,x) => s + lineTotal(x), 0)
+  };
+  stickyCheckoutTotal.textContent = fmt(totals.grand);
+}
+
+function updateFreeShipMsg(){
+  const stickyEl   = document.getElementById('freeShipMsg');          // sticky cart (already on your site)
+  const checkoutEl = document.getElementById('freeShipMsgCheckout');  // new line under Delivery
+
+  const write = (el, need) => {
+    if (!el) return;
+    if (need > 0){
+      el.classList.remove('ok');
+      el.style.display = '';
+      el.textContent = "Add " + fmt(need) + " more for free delivery";
+    } else if (need === 0){
+      el.classList.add('ok');
+      el.style.display = '';
+      el.textContent = "Free delivery unlocked 🎉";
+    } else {
+      // cart empty / not applicable
+      el.classList.remove('ok');
+      el.style.display = 'none';
+      el.textContent = "";
+    }
+  };
+
+  if (cart.length === 0){
+    write(stickyEl, -1);
+    write(checkoutEl, -1);
+    return;
+  }
+
+  // Use AFTER-coupon amount for eligibility (matches your current behavior)
+  let subtotal = cart.reduce((s,x)=> s + lineTotal(x), 0);
+  let couponSavings = 0;
+  if (typeof computeTotalsWithCoupon === 'function'){
+    const t = computeTotalsWithCoupon();
+    subtotal      = t.subtotal;
+    couponSavings = t.couponSavings || 0;
+  }
+  const eligible = Math.max(0, subtotal - couponSavings);
+  const need = Math.max(0, Number(POLICY.FREE_DELIVERY_MIN||0) - eligible);
+
+  write(stickyEl, need);
+  write(checkoutEl, need);
+}
+
+function removeFromCart(i){ cart.splice(i,1); refreshCartSheet(); updateCartUI(); }
+
+/** ======= Upsell & Checkout ======= **/
+viewCartBtn.onclick = function(){ 
+  // 1. Explicitly arm exit intent on cart view
+  if (typeof window.armExitIntent === 'function') window.armExitIntent();
+  
+  refreshCartSheet(); 
+  cartSheet.classList.add("active"); 
+
+// GA4: begin_checkout
+try {
+  const t = (typeof computeTotalsWithCoupon === 'function') ? computeTotalsWithCoupon() : {
+    subtotal: (Array.isArray(cart)?cart:[]).reduce((s,x)=> s + (typeof lineTotal==='function'?lineTotal(x):0), 0),
+    couponSavings: 0,
+    delivery: 0,
+    grand: (Array.isArray(cart)?cart:[]).reduce((s,x)=> s + (typeof lineTotal==='function'?lineTotal(x):0), 0)
+  };
+  const items = (cart||[]).map(dlItemFromCart);
+  dlEcom('begin_checkout', {
+    ecommerce: {
+      currency: GA4_CURRENCY,
+      value: Math.round(t.grand || 0),
+      coupon: (window.activeCoupon && activeCoupon.code) || undefined,
+      items
+    }
+  });
+} catch(e){ console.warn('[DL] begin_checkout error', e); }
+};
+closeSheet.onclick = function(){ 
+  cartSheet.classList.remove("active"); 
+  // CRO FIX #2: Hide sticky checkout bar when sheet closes
+  if (stickyCheckoutBar) stickyCheckoutBar.style.display = 'none';
+  if (trustBadges) trustBadges.style.display = 'none';
+};
+
+function buildUpsellInline(){
+  upsellInline.innerHTML = "";
+  var items = UPSELL_IDS.map(findItem).filter(function(x){return !!x;});
+  for(var i=0;i<items.length;i++){
+    (function(it){
+      var card = document.createElement("div"); card.className = "card";
+      var row = document.createElement("div"); row.className = "row space";
+      var left = document.createElement("div"); left.className = "left";
+      var img = document.createElement("img"); img.className = "thumb sm"; img.alt = it.name; img.loading = "lazy"; img.referrerPolicy = "no-referrer";
+      var cands = (typeof buildSrcCandidates === "function") ? buildSrcCandidates(resolveImageSrc(it.id)) : [resolveImageSrc(it.id)];
+      var ci = 0; img.onerror = function(){ ci++; if (typeof PLACEHOLDER_IMAGES !== "undefined" && ci >= cands.length) { img.src = PLACEHOLDER_IMAGES.default; } else { img.src = cands[Math.min(ci, cands.length-1)]; } };
+      img.src = cands[0];
+
+      var textBox = document.createElement("div"); textBox.style.minWidth = "0";
+      var title = document.createElement("div"); title.className = "title"; title.textContent = it.name;
+      var price = document.createElement("div"); price.className = "muted"; price.textContent = fmt(it.price);
+      textBox.appendChild(title); textBox.appendChild(price);
+      left.appendChild(img); left.appendChild(textBox); row.appendChild(left);
+
+      var btn = document.createElement("button"); btn.className = "btn"; btn.textContent = "Add";
+      if(!it.available){ btn.disabled = true; btn.title = "Unavailable"; }
+      else { btn.onclick = function(){ cart.push({ id:it.id, name:it.name, basePrice:it.price, unit:it.unit, qty:1, weight:null, addons:[], discountPct:0 }); updateCartUI(); refreshCartSheet(); }; }
+      row.appendChild(btn);
+
+      card.appendChild(row); upsellInline.appendChild(card);
+    })(items[i]);
+  }
+}
+
+function to12hShort(h){ var hour = h % 12; if (hour === 0) hour = 12; return ''+hour+(h>=12?'pm':'am'); }
+// MODIFIED: Updated for Ramadan Logic (checks specific date)
+function buildTimeChips(dateStr){
+  var grid = document.getElementById('timeChipGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  // Define Ramadan range (Assumes 2026 based on holiday config, please verify year)
+  var ramadanStart = "2026-02-19";
+  var ramadanEnd   = "2026-03-19";
+
+  var hours = [];
+  // Check if selected date is within Ramadan
+  if (dateStr >= ramadanStart && dateStr <= ramadanEnd) {
+     // Ramadan Slots:
+     // 1pm-2pm (13), 2pm-3pm (14), 3pm-4pm (15), 4pm-5pm (16)
+     // 8pm-9pm (20), 9pm-10pm (21)
+     hours = [13, 14, 15, 16, 20, 21];
+  } else {
+     // Standard: 12pm - 10pm (12, 13, ..., 21)
+     for(var h=12; h<22; h++) hours.push(h);
+  }
+
+  var firstRadio = null;
+  for (var i = 0; i < hours.length; i++) {
+    var h = hours[i];
+    var id = 'slot_'+h;
+    var label = to12hShort(h)+'–'+to12hShort(h+1);
+    var wrap = document.createElement('div'); wrap.className = 'slot';
+    var rb = document.createElement('input'); rb.type='radio'; rb.name='time_slot'; rb.id=id; rb.value=label;
+    var lab = document.createElement('label'); lab.setAttribute('for', id); lab.textContent = label;
+    if (!firstRadio) { rb.required = true; firstRadio = rb; }
+    wrap.appendChild(rb); wrap.appendChild(lab); grid.appendChild(wrap);
+  }
+}
+
+function refreshCartSheet(){
+  if (cart.length === 0) {
+    cartTableWrap.innerHTML = "<p>Your cart is empty.</p>";
+    orderTotals.innerHTML = "";
+    couponBox.innerHTML = "";    // clear coupon UI when empty
+    checkoutForm.innerHTML = "";
+    upsellInline.innerHTML = "";
+    
+    // CRO FIX #2: Hide sticky bar and trust badges when cart empty
+    if (stickyCheckoutBar) stickyCheckoutBar.style.display = 'none';
+    if (trustBadges) trustBadges.style.display = 'none';
+    
+    // Keep the sticky bar message in sync after any sheet change (incl. coupons)
+    updateFreeShipMsg();
+    return;
+
+  }
+
+  // Cart rows
+  var rows = cart.map(function(x,i){
+    var qtyText = (x.unit==="per100g"||x.unit==="per500g") ? (x.weight+" g") : x.qty;
+    var addonText = (x.addons && x.addons.length)? "<div class='muted'>Add-ons: "+x.addons.map(function(a){return a.name;}).join(", ")+"</div>" : "";
+    var discText = x.discountPct? "<div class='muted'>Discount: -"+(x.discountPct*100).toFixed(0)+"%</div>":"";
+    return "<tr><td><strong>"+x.name+"</strong>"+addonText+discText+"</td><td>"+qtyText+"</td><td>"+fmt(lineTotal(x))+"</td><td><button class=\"btn secondary\" onclick=\"removeFromCart("+i+")\">Remove</button></td></tr>";
+  }).join("");
+  cartTableWrap.innerHTML = "<table><thead><tr><th>Item</th><th>Qty</th><th>Total</th><th></th></tr></thead><tbody>"+rows+"</tbody></table>";
+
+  // === Totals (with coupon support) ===
+  (function(){
+    var subtotal, delivery, grand, couponSavings = 0;
+
+    if (typeof computeTotalsWithCoupon === 'function') {
+      var t = computeTotalsWithCoupon();
+      subtotal      = t.subtotal;
+      couponSavings = t.couponSavings || 0;
+      delivery      = t.delivery;
+      grand         = t.grand;
+    } else {
+      subtotal = cart.reduce(function(s,x){ return s + lineTotal(x); }, 0);
+
+      if (window.activeCoupon && activeCoupon.type === 'percent') {
+        for (var i=0;i<cart.length;i++){
+          var x = cart[i];
+          if (activeCoupon.appliesToIds && activeCoupon.appliesToIds.length &&
+              activeCoupon.appliesToIds.indexOf(x.id) === -1) continue;
+
+          var itemPct  = Number(x.discountPct || 0);
+          var extraPct = Math.max(0, Number(activeCoupon.percent||0) - itemPct);
+          if (extraPct <= 0) continue;
+
+          var priceWithItemDiscount   = Math.round(lineTotal(x));
+          var baseBeforeItemDiscount  = itemPct>0
+            ? Math.round(priceWithItemDiscount * 100 / (100 - itemPct))
+            : priceWithItemDiscount;
+
+          couponSavings += Math.round(baseBeforeItemDiscount * extraPct / 100);
+        }
+      }
+
+      var afterCoupon = Math.max(0, subtotal - couponSavings);
+      delivery = afterCoupon >= POLICY.FREE_DELIVERY_MIN ? 0 : POLICY.DELIVERY_FEE;
+      if (window.activeCoupon && activeCoupon.type === 'delivery' && activeCoupon.freeDelivery) {
+        delivery = 0;
+      }
+      grand = afterCoupon + delivery;
+    }
+
+    var adv = grand > POLICY.ADVANCE_MIN ? Math.round(grand * POLICY.ADVANCE_PERCENT) : 0;
+
+    orderTotals.innerHTML =
+      '<div class="note">'+
+        '<div class="row space"><div>Subtotal</div><div><strong>'+fmt(subtotal)+'</strong></div></div>'+
+        (couponSavings>0
+          ? '<div class="row space"><div>Coupon '+(activeCoupon ? '('+activeCoupon.code+')' : '')+
+            '</div><div class="success">– '+fmt(couponSavings)+'</div></div>'
+          : ''
+        )+
+        '<div class="row space"><div>Delivery (Dhaka city)</div><div>'+(delivery ? fmt(delivery) : "<span class=\"success\">Free</span>")+'</div></div>'+
+        '<div id="freeShipMsgCheckout" class="free-note" style="display:none" aria-live="polite"></div>'+
+        '<hr style="border:none;border-top:1px dashed var(--accent);margin:8px 0"/>'+
+        '<div class="row space"><div>Grand total</div><div><strong>'+fmt(grand)+'</strong></div></div>'+
+        (adv ? "<div class=\"muted\">Orders over Tk 5,000 require a <b>30% advance</b>: approx <b>"+fmt(adv)+"</b> via bKash to confirm.</div>" : "")+
+      '</div>';
+  })();
+  
+  // CRO FIX #5: Add Free Delivery Progress Bar to order totals
+  (function addProgressBar() {
+    var subtotal = cart.reduce((s,x) => s + lineTotal(x), 0);
+    var couponSavings = 0;
+    if (typeof computeTotalsWithCoupon === 'function') {
+      var t = computeTotalsWithCoupon();
+      subtotal = t.subtotal;
+      couponSavings = t.couponSavings || 0;
+    }
+    var eligible = Math.max(0, subtotal - couponSavings);
+    var target = POLICY.FREE_DELIVERY_MIN;
+    var percent = Math.min(100, Math.round((eligible / target) * 100));
+    var need = Math.max(0, target - eligible);
+    
+    var progressHTML = '<div class="free-delivery-progress">';
+    if (need > 0) {
+      progressHTML += 
+        '<div class="progress-header">' +
+        '<span>Progress to free delivery</span>' +
+        '<span>' + fmt(eligible) + ' / ' + fmt(target) + '</span>' +
+        '</div>' +
+        '<div class="progress-bar"><div class="progress-fill" style="width:' + percent + '%"></div></div>' +
+        '<div class="muted" style="text-align:center;margin-top:6px;font-size:12px;">Add ' + fmt(need) + ' more for free delivery 🚚</div>';
+    } else {
+      progressHTML += '<div class="progress-unlocked">🎉 Free delivery unlocked!</div>';
+    }
+    progressHTML += '</div>';
+    
+    orderTotals.innerHTML = progressHTML + orderTotals.innerHTML;
+  })();
+  
+  updateFreeShipMsg();
+
+  // === Coupon UI (moved above add-ons) ===
+  couponBox.innerHTML = `
+    <label>Coupon Code (optional)
+      <div class="row" style="gap:8px">
+        <input id="f_coupon" placeholder="Enter coupon" autocomplete="off" />
+        <button type="button" class="btn secondary" id="applyCouponBtn">Apply</button>
+        <button type="button" class="btn secondary" id="removeCouponBtn" style="display:none">Remove</button>
+      </div>
+      <div id="couponMsg" class="muted"></div>
+    </label>
+  `;
+
+  (function wireCoupon(){
+    const input    = document.getElementById('f_coupon');
+    const btnApply = document.getElementById('applyCouponBtn');
+    const btnRem   = document.getElementById('removeCouponBtn');
+    const msgEl    = document.getElementById('couponMsg');
+
+    function showState(){
+      if (activeCoupon){
+        input.value = activeCoupon.code || '';
+        if (btnApply) btnApply.style.display = 'none';
+        if (btnRem)   btnRem.style.display   = '';
+        if (msgEl){
+          const p = activeCoupon;
+          if (p.type === 'percent'){
+            msgEl.innerHTML = `<span class="success">Applied: ${p.code} — ${p.percent}% off ${p.appliesToIds && p.appliesToIds.length ? '('+p.appliesToIds.join(', ')+')' : 'eligible items'}</span>`;
+          } else if (p.type === 'delivery'){
+            msgEl.innerHTML = `<span class="success">Applied: ${p.code} — Free delivery</span>`;
+          } else {
+            msgEl.textContent = `Applied: ${p.code}`;
+          }
+        }
+      } else {
+        if (btnApply) btnApply.style.display = '';
+        if (btnRem)   btnRem.style.display   = 'none';
+        if (msgEl)    msgEl.textContent      = '';
+        if (input)    input.value            = '';
+      }
+    }
+
+    function applyFromInput(){
+      if (!input) return;
+      const code = input.value.trim();
+      if (!code) { if (msgEl) msgEl.textContent = 'Please enter a code.'; return; }
+      const promo = getPromoByCode(code);
+      if (!promo)     { if (msgEl) msgEl.textContent = 'Invalid coupon code.'; return; }
+      if (promo._expired){ if (msgEl) msgEl.textContent = 'This coupon has expired.'; return; }
+      activeCoupon = promo;
+      showState();
+      refreshCartSheet();
+    }
+
+    if (btnApply) btnApply.addEventListener('click', applyFromInput);
+    if (input)    input.addEventListener('keydown', function(e){
+      if (e.key === 'Enter'){ e.preventDefault(); applyFromInput(); }
+    });
+    if (btnRem)   btnRem.addEventListener('click', function(){
+      activeCoupon = null;
+      showState();
+      refreshCartSheet();
+    });
+
+    showState();
+  })();
+
+  // Inline upsell
+  buildUpsellInline();
+
+  // Checkout form (date + time chips etc.)
+  var minDate = minDeliveryDateISO();
+  checkoutForm.innerHTML = `
+    <h3>Delivery details</h3>
+    <label>Full Name <input required id="f_name" placeholder="Your name"/></label>
+    <label>Mobile Number <input required id="f_phone" placeholder="01XXXXXXXXX" inputmode="tel" pattern="01[0-9]{9}"/></label>
+    <label>Email (optional) <input type="email" id="f_email" placeholder="you@example.com"/></label>
+    <label>Address <textarea required id="f_address" rows="2" placeholder="Flat/House, Road, Area, Dhaka"></textarea></label>
+
+    <label>Delivery Date
+      <input type="date" required id="f_date" min="${minDate}"/>
+    </label>
+
+    <label style="display:block">Preferred Time
+      <div id="timeChipGrid" class="slot-grid" role="radiogroup" aria-label="Preferred time slot"></div>
+    </label>
+
+    <label>Payment Option
+      <select id="f_payment" required>
+        <option value="COD">Cash on Delivery (COD)</option>
+        <option value="bKash">bKash</option>
+      </select>
+    </label>
+
+    <label>Any sauce preferences or notes?
+      <input id="f_notes" placeholder="e.g., BBQ x2, Cheese x1; gate code; call on arrival."/>
+    </label>
+  `;
+
+  // MODIFIED: Init buildTimeChips AND listen for date changes
+  var dateInput = document.getElementById("f_date");
+  buildTimeChips(dateInput.value); // render for default date
+  dateInput.addEventListener('change', function(){
+     buildTimeChips(this.value); // re-render when date changes
+  });
+
+  // CRO FIX #2: Show sticky checkout bar and trust badges
+  if (stickyCheckoutBar) {
+    stickyCheckoutBar.style.display = 'flex';
+    updateStickyCheckoutBar();
+  }
+  if (trustBadges) trustBadges.style.display = 'grid';
+  
+  // CRO FIX #2: Wire up sticky Place Order button
+  if (stickyPlaceOrder) {
+    stickyPlaceOrder.onclick = function() {
+      // Scroll to form validation or submit
+      var formPlaceOrder = document.getElementById("placeOrder");
+      if (formPlaceOrder) {
+        formPlaceOrder.click();
+      } else {
+        submitOrder();
+      }
+    };
+  }
+
+  
+ // --- Keep date sane: Handle holidays & min delivery times
+ (function prepDateField(){
+   const dateEl = document.getElementById('f_date');
+   if (!dateEl) return;
+
+   // 🛑 HOLIDAY CONFIGURATION
+   const HOLIDAY_START = "2026-02-10"; // Start blocked date
+   const HOLIDAY_END   = "2026-02-12"; // End blocked date
+   const NEXT_OPEN     = "2026-02-13"; // First available day after
+
+   const setMinAndValue = () => {
+     let md = minDeliveryDateISO(); // Calculate standard minimum (next day/day after)
+     
+     // 1. If the calculated minimum falls exactly on a holiday, bump valid min to Next Open
+     if (md >= HOLIDAY_START && md <= HOLIDAY_END) {
+       md = NEXT_OPEN;
+     }
+
+     dateEl.min = md;
+
+     // 2. If current selection is empty or too early (before min), snap to min
+     if (!dateEl.value || dateEl.value < md) {
+        dateEl.value = md;
+     } 
+     
+     // 3. Specific check: If selection is inside holiday range, snap to Next Open
+     if (dateEl.value >= HOLIDAY_START && dateEl.value <= HOLIDAY_END) {
+        dateEl.value = NEXT_OPEN;
+     }
+   };
+
+   // Run immediately to set initial valid date
+   setMinAndValue();
+
+   // Re-validate when user interacts
+   dateEl.addEventListener('focus', setMinAndValue);
+   dateEl.addEventListener('click', setMinAndValue);
+   
+   // Alert user specifically if they try to change to a blocked date
+   dateEl.addEventListener('change', function() {
+     if (this.value >= HOLIDAY_START && this.value <= HOLIDAY_END) {
+       alert(`We are on holiday from Feb 10-12. Please select a date from Feb 13 onwards.`);
+       this.value = NEXT_OPEN;
+     }
+   });
+ })();
+}
+
+function renderThankYouSummary(order){
+  var rows = order.items.map(function(x){
+    var qtyText = (x.unit==="per100g"||x.unit==="per500g") ? (x.weight+" g") : x.qty;
+    var addTxt = (x.addons && x.addons.length) ? " <span class='muted'>(Add-ons: "+x.addons.map(function(a){return a.name;}).join(", ")+")</span>" : "";
+    return "<tr><td>"+x.name+addTxt+"</td><td style='text-align:right'>"+qtyText+"</td><td style='text-align:right'>"+fmt(x.lineTotal)+"</td></tr>";
+  }).join("");
+
+  var couponRow = (order.pricing && order.pricing.couponSavings > 0)
+  ? "<div class='row space'><div>Coupon " +
+      (order.coupon && order.coupon.code ? "(" + order.coupon.code + ")" : "") +
+    "</div><div class='success'>– " + fmt(order.pricing.couponSavings) + "</div></div>"
+  : "";
+
+  var html =
+    "<div class='note'>" +
+      "<div style='margin-bottom:8px'><b>Order Summary</b></div>" +
+      "<table style='width:100%'><thead>" +
+        "<tr><th style='text-align:left'>Item</th><th style='text-align:right'>Qty</th><th style='text-align:right'>Total</th></tr>" +
+      "</thead><tbody>" + rows + "</tbody></table>" +
+      "<hr style='border:none;border-top:1px dashed var(--accent);margin:10px 0'/>" +
+      "<div class='row space'><div>Subtotal</div><div><b>"+fmt(order.pricing.subtotal)+"</b></div></div>" +
+      couponRow +
+      "<div class='row space'><div>Delivery</div><div>"+(order.pricing.delivery? fmt(order.pricing.delivery):"<span class='success'>Free</span>")+"</div></div>" +
+      "<div class='row space' style='margin-top:8px'><div><b>Grand Total</b></div><div><b>"+fmt(order.pricing.grand)+"</b></div></div>" +
+    "</div>";
+
+  var box = document.getElementById("tySummary");
+  if (box) box.innerHTML = html;
+}
+
+function todayYMD(){
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const dd = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${dd}`;
+}
+function isWithin(start, end, ymd){ return (!start || ymd >= start) && (!end || ymd <= end); }
+function getPromoByCode(code){
+  if(!code) return null;
+  const c = String(code).trim().toUpperCase();
+  const p = PROMOS[c];
+  if(!p) return null;
+  const today = todayYMD();
+  if(!isWithin(p.starts, p.ends, today)) return { _expired: true, code:c, ...p };
+  return { code:c, ...p };
+}
+function couponAppliesToItem(coupon, item){
+  if(!coupon) return false;
+  if(coupon.type === 'percent'){
+    if (coupon.appliesToIds && coupon.appliesToIds.length){
+      return coupon.appliesToIds.includes(item.id);
+    }
+    return true;
+  }
+  return false;
+}
+
+function cartSubtotalAfterItemDiscounts(){
+    try{
+      const arr = Array.isArray(cart) ? cart : [];
+      return arr.reduce((sum, x) => {
+        if (typeof lineTotal === 'function') {
+          return sum + Math.round(lineTotal(x));
+        }
+        const qty   = Number(x.qty || 1);
+        const price = Number(x.price || 0);
+        const pct   = Number(x.discountPct || 0); // 0..100
+        const perUnit = Math.round(price * (100 - pct) / 100);
+        return sum + perUnit * qty;
+      }, 0);
+    }catch(e){
+      console.warn('[NEW25] subtotal fallback error:', e);
+      return 0;
+    }
+  }
+
+function computeCouponSavingsForCart(coupon){
+  if (!coupon) return 0;
+
+  if (coupon.type === 'percent'){
+    const pct = Math.max(0, Number(coupon.percent || 0));
+
+    // WHOLE ORDER: no appliesToIds -> straight % of subtotal
+    if (!coupon.appliesToIds || coupon.appliesToIds.length === 0){
+      const subtotal = cartSubtotalAfterItemDiscounts();
+      return Math.round(subtotal * pct / 100);
+    }
+
+    // ITEM-SCOPED (existing behavior kept)
+    let save = 0;
+    const arr = Array.isArray(cart) ? cart : [];
+    for (const x of arr){
+      if (!couponAppliesToItem || !couponAppliesToItem(coupon, x)) continue;
+
+      if (typeof lineTotal === 'function') {
+        const line = Math.round(lineTotal(x));
+        save += Math.round(line * pct / 100);
+      } else {
+        // fallback per-line math if lineTotal isn't in scope
+        const qty   = Number(x.qty || 1);
+        const price = Number(x.price || 0);
+        const ipct  = Number(x.discountPct || 0);
+        const per   = Math.round(price * (100 - ipct) / 100);
+        save += Math.round(per * qty * pct / 100);
+      }
+    }
+    return save;
+  }
+
+  return 0;
+}
+
+function computeTotalsWithCoupon(){
+  const subtotal = cart.reduce((s,x)=> s + Math.round(lineTotal(x)), 0);
+  const couponSavings = computeCouponSavingsForCart(activeCoupon);
+  const afterCoupon = Math.max(0, subtotal - couponSavings);
+  let delivery = afterCoupon >= POLICY.FREE_DELIVERY_MIN ? 0 : POLICY.DELIVERY_FEE;
+  if (activeCoupon && activeCoupon.type === 'delivery' && activeCoupon.freeDelivery) delivery = 0;
+  const grand = afterCoupon + delivery;
+  return { subtotal, couponSavings, delivery, grand };
+}
+
+async function submitOrder(){
+  var name = document.getElementById("f_name").value.trim();
+  var phone = document.getElementById("f_phone").value.trim();
+  var emailEl = document.getElementById("f_email");
+  var email = (emailEl.value||"").trim();
+  console.log("Customer email being sent:", email);
+  var address = document.getElementById("f_address").value.trim();
+  var date = document.getElementById("f_date").value;
+  var timeRB = document.querySelector('input[name="time_slot"]:checked');
+  var time = timeRB ? timeRB.value : '';
+  var payment = document.getElementById("f_payment").value;
+  var notes = document.getElementById("f_notes").value.trim();
+
+  if(!name || !phone || !address || !date || !time || !payment){ alert("Please fill in all required fields."); return; }
+  if(email && !emailEl.checkValidity()){ alert("Please enter a valid email or leave it blank."); return; }
+  var minDate = minDeliveryDateISO(); if(date < minDate){ alert("Same-day delivery is not available. Earliest date is "+minDate+"."); return; }
+
+  var orderNo = Date.now();
+
+  var __totals;
+  if (typeof computeTotalsWithCoupon === 'function') {
+    __totals = computeTotalsWithCoupon();
+  } else {
+    var __subtotal = cart.reduce(function (s, x) { return s + Math.round(lineTotal(x)); }, 0);
+    var __couponSavings = 0;
+    if (window.activeCoupon && activeCoupon.type === 'percent') {
+      for (var i = 0; i < cart.length; i++) {
+        var it = cart[i];
+        if (activeCoupon.appliesToIds && activeCoupon.appliesToIds.length &&
+            activeCoupon.appliesToIds.indexOf(it.id) === -1) continue;
+
+        var itemPct  = Number(it.discountPct || 0);
+        var extraPct = Math.max(0, Number(activeCoupon.percent || 0) - itemPct);
+        if (extraPct <= 0) continue;
+
+        var priceWithItemDiscount  = Math.round(lineTotal(it));
+        var baseBeforeItemDiscount = itemPct > 0
+          ? Math.round(priceWithItemDiscount * 100 / (100 - itemPct))
+          : priceWithItemDiscount;
+
+        __couponSavings += Math.round(baseBeforeItemDiscount * extraPct / 100);
+      }
+    }
+    var __afterCoupon = Math.max(0, __subtotal - __couponSavings);
+    var __delivery    = __afterCoupon >= POLICY.FREE_DELIVERY_MIN ? 0 : POLICY.DELIVERY_FEE;
+    if (window.activeCoupon && activeCoupon.type === 'delivery' && activeCoupon.freeDelivery) __delivery = 0;
+    __totals = { subtotal: __subtotal, couponSavings: __couponSavings, delivery: __delivery, grand: __afterCoupon + __delivery };
+  }
+
+  var order = {
+    type: "NEW_ORDER",
+    orderNo: orderNo,
+    whenISO: new Date().toISOString(),
+    customer: { name, phone, email, address, date, time, payment, notes },
+    items: cart.map(function (x) {
+      return { id:x.id, name:x.name, unit:x.unit, weight:x.weight, qty:x.qty, addons:x.addons||[], discountPct:Number(x.discountPct||0), lineTotal: Math.round(lineTotal(x)) };
+    }),
+    pricing: { subtotal: __totals.subtotal, couponSavings: __totals.couponSavings, delivery: __totals.delivery, grand: __totals.grand },
+    coupon: (window.activeCoupon ? { code: activeCoupon.code, type: activeCoupon.type, percent: activeCoupon.percent || 0, label: activeCoupon.label || '', savings: __totals.couponSavings } : null)
+  };
+
+  var advanceDue = order.pricing.grand > POLICY.ADVANCE_MIN ? Math.round(order.pricing.grand * POLICY.ADVANCE_PERCENT) : 0;
+  order.pricing.advanceDue = advanceDue;
+
+  var ok = await postToAPI({ payload: JSON.stringify(order) });
+  if(!ok){ alert("Could not submit the order. Please try again or message us on Facebook."); return; }
+
+  var tyHead = document.getElementById("tyHeadline");
+  tyHead.textContent = "Order No. " + order.orderNo + " is now confirmed!";
+  renderThankYouSummary(order);
+
+  
+
+// GA4: purchase
+try {
+  const items = (order.items||[]).map(function(it){
+    const variant = (it.unit==='per100g'||it.unit==='per500g') ? (it.weight+'g') : (it.unit==='perPiece' ? (it.qty+' pc') : 'fixed');
+    return {
+      item_id: it.id,
+      item_name: it.name,
+      item_category: (typeof findItem==='function' && findItem(it.id) && findItem(it.id).category) ? findItem(it.id).category : 'Other',
+      item_variant: variant,
+      price: Number(it.lineTotal)||0,
+      quantity: 1,
+      currency: GA4_CURRENCY
+    };
+  });
+  dlEcom('purchase', {
+    ecommerce: {
+      transaction_id: String(order.orderNo),
+      value: Math.round(order.pricing && order.pricing.grand || 0),
+      shipping: Math.round(order.pricing && order.pricing.delivery || 0),
+      currency: GA4_CURRENCY,
+      coupon: (order.coupon && order.coupon.code) || undefined,
+      items
+    }
+  });
+} catch(e){ console.warn('[DL] purchase error', e); }
+
+var advBox = document.getElementById("tyAdvance");
+  if (order.pricing.grand > POLICY.ADVANCE_MIN) {
+    var advAmt = Math.round(order.pricing.grand * POLICY.ADVANCE_PERCENT);
+    advBox.style.display = "block";
+    advBox.innerHTML = "<div style='font-size:16px'><b>Advance required:</b> Please <b>Send Money</b> via bKash<br>30% of your total (<b>"+fmt(advAmt)+"</b>) to<br><b>01789246166</b></div>";
+  } else { advBox.style.display = "none"; }
+
+  cart = [];
+  updateCartUI();
+  cartSheet.classList.remove("active");
+  
+  // CRO FIX #2: Hide sticky bar on order submit
+  if (stickyCheckoutBar) stickyCheckoutBar.style.display = 'none';
+  if (trustBadges) trustBadges.style.display = 'none';
+  
+  thankyouSheet.classList.add("active");
+
+  var chatBtn = document.getElementById("openChatBtn");
+  if (chatBtn) {
+    chatBtn.onclick = function(){
+      if (window.toggleChat) { window.toggleChat(); }
+      else { window.open('https://m.me/112026036884724','_blank','noopener'); }
+    };
+  }
+}
+
+document.getElementById("startNewOrder").onclick = function(){ thankyouSheet.classList.remove("active"); };
+document.getElementById("closeThankyou").onclick = function(){ thankyouSheet.classList.remove("active"); };
+
+/* === Review data === */
+var REVIEWS = [
+  { text: "Best smoked brisket in Dhaka — juicy, tender, perfect bark.", who: "— Raiyan H." },
+  { text: "Delivered right on time. Short ribs were insane.",             who: "— Maliha S." },
+  { text: "The jacket chilli cheese potatoes are a must-add!",           who: "— Arif K." },
+  { text: "Customer service on Messenger was super helpful.",            who: "— Tania R." },
+  { text: "Ordered for a family dinner — everyone loved it.",            who: "— Naim U." }
+];
+
+/* State & timers */
+var __revIndex = 0; var __revTimer = null; var __revAutoMs = 4000; var __revPauseMs = 8000;
+function showReview(idx){ var t = document.getElementById('reviewText'); var w = document.getElementById('reviewWho'); if(!t || !w) return; var r = REVIEWS[idx]; if(!r) return; t.textContent = r.text; w.textContent = r.who || ''; }
+function startReviewAuto(){ if (__revTimer) clearInterval(__revTimer); __revTimer = setInterval(function(){ __revIndex = (__revIndex + 1) % REVIEWS.length; showReview(__revIndex); }, __revAutoMs); }
+function pauseThenResume(){ if (__revTimer) clearInterval(__revTimer); setTimeout(function(){ startReviewAuto(); }, __revPauseMs); }
+function buildReviewSlider(){
+  var strip = document.getElementById('reviewStrip'); if(!strip) return;
+  __revIndex = 0; showReview(__revIndex);
+  var prev = document.getElementById('revPrev'); var next = document.getElementById('revNext');
+  if (prev) prev.addEventListener('click', function(){ __revIndex = (__revIndex - 1 + REVIEWS.length) % REVIEWS.length; showReview(__revIndex); pauseThenResume(); });
+  if (next) next.addEventListener('click', function(){ __revIndex = (__revIndex + 1) % REVIEWS.length; showReview(__revIndex); pauseThenResume(); });
+  if (prev) prev.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); prev.click(); }});
+  if (next) next.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); next.click(); }});
+  startReviewAuto();
+}
+
+/* Keep tabs sticky below taller header (bar + reviews) */
+function recalcStickyOffsets(){
+  var header = document.getElementById('siteHeader');
+  if(!header) return;
+  var h = header.offsetHeight;
+  document.documentElement.style.setProperty('--tabsTop', h + 'px');
+}
+
+/* Initialize on load and on layout changes */
+window.addEventListener('load', function(){
+  buildReviewSlider();
+  recalcStickyOffsets();
+  setTimeout(recalcStickyOffsets, 200);
+  startFomoCountdown();
+  recalcFixedBottoms();
+  setTimeout(recalcFixedBottoms, 200);
+});
+window.addEventListener('resize', recalcStickyOffsets);
+window.addEventListener('orientationchange', recalcStickyOffsets);
+window.addEventListener('resize', recalcFixedBottoms);
+window.addEventListener('orientationchange', recalcFixedBottoms);
+
+// Init
+buildTabs(); buildList(); updateCartUI();
+
+(function runSelfTests(){
+  var results = [];
+  var must = ["tabs","list","stickyCart","cartCount","cartTotal","cartSheet","thankyouSheet","upsellInline","viewCartBtn","closeSheet"];
+  for(var i=0;i<must.length;i++){ results.push(!!document.getElementById(must[i])); }
+  var rendered = document.querySelectorAll("#list .card").length;
+  if(!results.every(function(x){return x;}) || rendered === 0){
+    console.warn("Setup issue — check console");
+  } else {
+    console.log("Rendered "+rendered+"/"+MENU.length);
+  }
+})();
+</script>
+
+<!-- Messenger FAB -->
+<a id="messengerFab" class="chat-fab" aria-label="Chat on Messenger"
+   href="https://m.me/112026036884724" target="_blank" rel="noopener">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/b/be/Facebook_Messenger_logo_2020.svg"
+       alt="Messenger" loading="lazy">
+</a>
+
+<!-- Dismissible help bubble -->
+<div id="chatTip" class="chat-tip" role="status" aria-live="polite">
+  <span class="text">If you have any questions or need help with the menu, please contact us here</span>
+  <button class="close" aria-label="Close help bubble">×</button>
+</div>
+
+<script>
+  (function setupChatTip(){
+    var tip = document.getElementById('chatTip');
+    if (!tip) return;
+    try { if (localStorage.getItem('hideChatTip') === '1') { tip.classList.add('hide'); return; } } catch(_){}
+    var btn = tip.querySelector('button.close');
+    if (btn) {
+      btn.addEventListener('click', function(){
+        tip.classList.add('hide');
+        try { localStorage.setItem('hideChatTip','1'); } catch(_){}
+      });
+    }
+    tip.classList.add('hide');
+    setTimeout(function(){ tip.classList.remove('hide'); }, 800);
+  })();
+</script>
+
+<script>
+  // --- Register SW
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(r => console.log('[SW] registered', r.scope))
+      .catch(err => console.warn('[SW] failed', err));
+  }
+
+  // --- Button-only install flow (no banner)
+  let deferredPrompt = null;
+  const installBtnHeader = document.getElementById('installBtn');
+
+  // Show the header button when eligible
+  window.addEventListener('beforeinstallprompt', (e) => {
+    console.log('[PWA] beforeinstallprompt fired');
+    e.preventDefault();                 // prevent auto-mini-infobar
+    deferredPrompt = e;
+    if (installBtnHeader) installBtnHeader.style.display = '';
+  });
+
+  // Clicking the header button triggers the prompt
+  if (installBtnHeader) {
+    installBtnHeader.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      // Hide after interaction; Chrome won't re-prompt immediately
+      installBtnHeader.style.display = 'none';
+      deferredPrompt = null;
+    });
+  }
+
+  // Hide the button if already installed
+  window.addEventListener('appinstalled', () => {
+    console.log('[PWA] appinstalled');
+    if (installBtnHeader) installBtnHeader.style.display = 'none';
+  });
+
+  // (Optional) iOS Safari never fires beforeinstallprompt. If you want to show
+  // a tip for iOS users, you can add your own UI elsewhere (no banner here).
+</script>
+
+
+<script>
+  // ===== Announcement (review-style slider) =====
+  const ANNOUNCEMENTS = [
+
+    "10% off for new customers — Use code NEW25 at checkout",
+    "Free delivery for orders above Tk 1,500!",
+    "21 day dry-aged. Smoked for 12 Hours. Gone in 1 minute!",
+    "11,500+ fans on Facebook can't be wrong!",
+    
+    
+  ];
+
+  let __annIndex = 0;
+  let __annTimer = null;
+  const __annAutoMs = 5000;   // auto-advance every 5s
+  const __annPauseMs = 8000;  // pause after manual nav
+
+  function showAnnouncement(i){
+    const textEl = document.getElementById('annText');
+    if (!textEl) return;
+    const msg = ANNOUNCEMENTS[i] || "";
+    textEl.textContent = msg;
+  }
+  function startAnnouncementAuto(){
+    stopAnnouncementAuto();
+    __annTimer = setInterval(() => {
+      __annIndex = (__annIndex + 1) % ANNOUNCEMENTS.length;
+      showAnnouncement(__annIndex);
+    }, __annAutoMs);
+  }
+  function stopAnnouncementAuto(){
+    if (__annTimer) clearInterval(__annTimer);
+    __annTimer = null;
+  }
+  function pauseThenResumeAnnouncements(){
+    stopAnnouncementAuto();
+    setTimeout(startAnnouncementAuto, __annPauseMs);
+  }
+
+  function buildAnnouncementSlider(){
+  const bar = document.getElementById('announceBar');
+  const prev = document.getElementById('annPrev');
+  const next = document.getElementById('annNext');
+
+  if (!bar) return;
+
+  // Show the bar and first message
+  bar.style.display = '';
+  __annIndex = 0;
+  showAnnouncement(__annIndex);
+
+  // Wire prev/next
+  if (prev) prev.addEventListener('click', () => {
+    __annIndex = (__annIndex - 1 + ANNOUNCEMENTS.length) % ANNOUNCEMENTS.length;
+    showAnnouncement(__annIndex);
+    pauseThenResumeAnnouncements();
+  });
+  if (next) next.addEventListener('click', () => {
+    __annIndex = (__annIndex + 1) % ANNOUNCEMENTS.length;
+    showAnnouncement(__annIndex);
+    pauseThenResumeAnnouncements();
+  });
+  // Keyboard a11y
+  if (prev) prev.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); prev.click(); }});
+  if (next) next.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); next.click(); }});
+
+  // Start auto-rotate
+  startAnnouncementAuto();
+
+  // Keep sticky offsets correct in case header height is used elsewhere
+  if (typeof recalcStickyOffsets === 'function') {
+    setTimeout(recalcStickyOffsets, 50);
+    window.addEventListener('resize', recalcStickyOffsets);
+    window.addEventListener('orientationchange', recalcStickyOffsets);
+  }
+}
+
+
+  // Boot it with your existing onload flow
+  window.addEventListener('load', buildAnnouncementSlider);
+</script>
+
+<script>
+// ===== EXIT INTENT (Mobile Back Button Intercept) =====
+(function initExitIntent(){
+  let popupVisible = false;
+  
+  const popupWrap = document.getElementById('exitIntentPopup');
+  const claimBtn  = document.getElementById('exitClaimBtn');
+  const dismBtn   = document.getElementById('exitDismissBtn');
+  if(!popupWrap) return;
+
+  // GLOBAL EXPORT: Allow other parts of the app (like buttons) to arm the trap explicitly
+  window.armExitIntent = function() {
+    armHistory();
+  };
+
+  // Helper: Check if we are currently in the 'active' state (trap armed)
+  function isArmed() {
+    return history.state && history.state.appState === 'active';
+  }
+
+  // 1. Arm the Trap
+  function armHistory() {
+    if (popupVisible) return;
+    if (isArmed()) return; // Already armed, do nothing
+
+    try {
+      // We explicitly enforce 'base' on the current entry, then push 'active'.
+      // This ensures we always have a clean [Base] -> [Active] stack for the logic to work.
+      const scrollPos = window.scrollY; // Preserve scroll (though replace/push might reset it on some browsers)
+      history.replaceState({ appState: 'base' }, document.title, location.href);
+      history.pushState({ appState: 'active' }, document.title, location.href);
+    } catch (e) {
+      // Ignore security errors if browser blocks strictly
+    }
+  }
+
+  // 2. Triggers
+  // We try immediately on load
+  setTimeout(armHistory, 50);
+
+  // We try on ANY interaction. 
+  const events = ['click', 'touchend', 'touchstart', 'scroll', 'mouseup', 'keydown'];
+  events.forEach(evt => {
+    window.addEventListener(evt, armHistory, {capture: true, passive: true});
+  });
+
+  // 3. Handle Back Button (Popstate)
+  window.addEventListener('popstate', function(e){
+    // LOGIC for iOS/Mobile:
+    // If state is null, it usually means we went back to the very first history entry 
+    // (because replaceState might have failed or been cleared). We treat null as 'base'.
+    // If state is explicitly {appState: 'base'}, we also treat it as base.
+    
+    const isBackToBase = (e.state === null) || (e.state && e.state.appState === 'base');
+    
+    if (isBackToBase) {
+        // User hit Back!
+        
+        // Context: Is the cart open?
+        const cartOpen = document.getElementById('cartSheet').classList.contains('active');
+        if (cartOpen) {
+            // Close cart, keep them on page
+            document.getElementById('cartSheet').classList.remove('active');
+            // Re-arm the trap (push active again) so next back works
+            history.pushState({ appState: 'active' }, document.title, location.href);
+            return;
+        }
+
+        // Context: Popup already shown?
+        if (popupVisible) {
+            // If popup is visible and they hit back again, they are determined to leave.
+            return;
+        }
+
+        // Show the Exit Intent Popup
+        popupWrap.classList.add('active');
+        popupVisible = true;
+    }
+  });
+
+  // 4. Actions
+  
+  // Claim: Apply code NEW25 + Open Cart + Close Popup
+  claimBtn.addEventListener('click', function(){
+    popupWrap.classList.remove('active');
+    popupVisible = false;
+    
+    const promo = getPromoByCode('NEW25');
+    if(promo && !promo._expired) {
+      activeCoupon = promo;
+      refreshCartSheet();
+      updateCartUI();
+      document.getElementById('cartSheet').classList.add("active");
+      
+      // Push 'active' again so Back button closes cart.
+      history.pushState({ appState: 'active' }, document.title, location.href);
+    }
+  });
+
+  // Dismiss: Close Popup
+  dismBtn.addEventListener('click', function(){
+    popupWrap.classList.remove('active');
+    // We stay at 'base'. The user can now exit freely with one more Back press.
+  });
+
+})();
+</script>
+
+</body>
+</html>
