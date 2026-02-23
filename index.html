@@ -78,8 +78,31 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .sheet{background:#fff;position:fixed;inset:0;z-index:999;display:none;flex-direction:column}
     .sheet.active{display:flex}
     .sheet .head{padding:12px 16px;border-bottom:1px solid var(--accent);display:flex;align-items:center;justify-content:space-between}
-    .sheet .body{padding:16px;padding-bottom:140px;overflow:auto}
+    .sheet .body{padding:16px;padding-bottom:168px;overflow:auto}
     table{width:100%;border-collapse:collapse} th,td{padding:8px 6px;border-bottom:1px dashed var(--accent);text-align:left;font-size:14px}
+
+    .cart-table th,.cart-table td{vertical-align:middle}
+    .cart-item-meta{display:flex;flex-direction:column;gap:2px}
+    .cart-row-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+    .qty-stepper{display:inline-flex;align-items:center;gap:8px;padding:4px;border:1px solid var(--accent);border-radius:12px;background:#fff}
+    .qty-stepper__btn{min-width:46px;min-height:46px;border:1px solid var(--accent);background:#fff;color:#111;border-radius:10px;font-size:20px;line-height:1;font-weight:700;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation}
+    .qty-stepper__btn:active{transform:scale(.97);background:#f3f3f3}
+    .qty-stepper__btn[disabled]{opacity:.45;cursor:not-allowed;background:#f6f6f6;color:#777}
+    .qty-stepper__btn:focus-visible,.cart-remove-btn:focus-visible{outline:3px solid #111;outline-offset:2px}
+    .qty-stepper__value{min-width:32px;text-align:center;font-weight:700;font-size:15px}
+    .cart-remove-btn{font-size:12px;padding:6px 8px;border-radius:8px}
+
+    @media (max-width:640px){
+      .cart-table thead{display:none}
+      .cart-table,.cart-table tbody,.cart-table tr,.cart-table td{display:block;width:100%}
+      .cart-table tr{border-bottom:1px dashed var(--accent);padding:10px 0}
+      .cart-table td{border:none;padding:4px 0}
+      .cart-table tr td:first-child{padding-top:0}
+      .cart-table tr td:last-child{padding-bottom:0}
+      .cart-row-actions{justify-content:space-between;align-items:center}
+      .qty-stepper{gap:6px}
+      .qty-stepper__value{min-width:28px}
+    }
     .form{display:grid;gap:12px} .form input,.form select,.form textarea{width:100%;padding:10px;border-radius:12px;border:1px solid var(--accent)}
     .note{background:#fafafa;border:1px solid var(--accent);padding:10px;border-radius:12px;font-size:13px}
     .success{color:var(--ok);font-weight:700} .danger{color:var(--danger);font-weight:700}
@@ -1296,6 +1319,24 @@ function updateFreeShipMsg(){
 
 function removeFromCart(i){ cart.splice(i,1); refreshCartSheet(); updateCartUI(); }
 
+function updateCartItemQty(i, delta){
+  var item = cart[i];
+  if (!item) return;
+
+  if (item.unit === "per100g" || item.unit === "per500g") {
+    var step = item.unit === "per100g" ? 100 : 500;
+    var minWeight = Number(item.min || step);
+    var maxWeight = Number(item.max || item.weight || minWeight);
+    item.weight = Math.max(minWeight, Math.min(maxWeight, Number(item.weight || minWeight) + (delta * step)));
+  } else {
+    var minQty = Number(item.min || 1);
+    item.qty = Math.max(minQty, Number(item.qty || minQty) + delta);
+  }
+
+  refreshCartSheet();
+  updateCartUI();
+}
+
 /** ======= Upsell & Checkout ======= **/
 viewCartBtn.onclick = function(){ 
   // 1. Explicitly arm exit intent on cart view
@@ -1415,12 +1456,29 @@ function refreshCartSheet(){
 
   // Cart rows
   var rows = cart.map(function(x,i){
-    var qtyText = (x.unit==="per100g"||x.unit==="per500g") ? (x.weight+" g") : x.qty;
+    var isWeight = (x.unit==="per100g"||x.unit==="per500g");
+    var minBound = Number(x.min || (isWeight ? (x.unit==="per100g" ? 100 : 500) : 1));
+    var currentValue = isWeight ? Number(x.weight || minBound) : Number(x.qty || minBound);
+    var atMin = currentValue <= minBound;
+    var qtyText = isWeight ? (currentValue+" g") : currentValue;
+    var safeName = String(x.name || "Item").replace(/["']/g, function(ch){ return ch === "\"" ? "&quot;" : "&#39;"; });
     var addonText = (x.addons && x.addons.length)? "<div class='muted'>Add-ons: "+x.addons.map(function(a){return a.name;}).join(", ")+"</div>" : "";
     var discText = x.discountPct? "<div class='muted'>Discount: -"+(x.discountPct*100).toFixed(0)+"%</div>":"";
-    return "<tr><td><strong>"+x.name+"</strong>"+addonText+discText+"</td><td>"+qtyText+"</td><td>"+fmt(lineTotal(x))+"</td><td><button class=\"btn secondary\" onclick=\"removeFromCart("+i+")\">Remove</button></td></tr>";
+
+    return "<tr>"+
+      "<td><div class='cart-item-meta'><strong>"+x.name+"</strong>"+addonText+discText+"</div></td>"+
+      "<td><div class='cart-row-actions'>"+
+        "<div class='qty-stepper' role='group' aria-label='Quantity controls for "+safeName+"'>"+
+          "<button type='button' class='qty-stepper__btn' onclick='updateCartItemQty("+i+",-1)' aria-label='Decrease quantity for "+safeName+"'"+(atMin?" disabled":"")+">−</button>"+
+          "<span class='qty-stepper__value' aria-live='polite'>"+qtyText+"</span>"+
+          "<button type='button' class='qty-stepper__btn' onclick='updateCartItemQty("+i+",1)' aria-label='Increase quantity for "+safeName+"'>+</button>"+
+        "</div>"+
+        "<strong>"+fmt(lineTotal(x))+"</strong>"+
+      "</div></td>"+
+      "<td><button type='button' class='btn secondary cart-remove-btn' onclick='removeFromCart("+i+")'>Remove</button></td>"+
+    "</tr>";
   }).join("");
-  cartTableWrap.innerHTML = "<table><thead><tr><th>Item</th><th>Qty</th><th>Total</th><th></th></tr></thead><tbody>"+rows+"</tbody></table>";
+  cartTableWrap.innerHTML = "<table class='cart-table'><thead><tr><th>Item</th><th>Qty & Total</th><th></th></tr></thead><tbody>"+rows+"</tbody></table>";
 
   // === Totals (with coupon support) ===
   (function(){
