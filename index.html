@@ -1296,6 +1296,42 @@ function updateFreeShipMsg(){
 
 function removeFromCart(i){ cart.splice(i,1); refreshCartSheet(); updateCartUI(); }
 
+function setCartItemQty(i, qty){
+  var item = cart[i];
+  if(!item) return;
+  var nextQty = Number(qty);
+
+  if(!isFinite(nextQty)) return;
+  if(nextQty <= 0){
+    removeFromCart(i);
+    return;
+  }
+
+  var minQty = 1;
+  if(typeof findItem === 'function'){
+    var menuItem = findItem(item.id);
+    if(menuItem && (item.unit === 'perPiece' || item.unit === 'fixed')){
+      minQty = Math.max(1, Number(menuItem.min || 1));
+    }
+  }
+
+  item.qty = Math.max(minQty, Math.round(nextQty));
+  refreshCartSheet();
+  updateCartUI();
+}
+
+function incrementCartItem(i){
+  var item = cart[i];
+  if(!item) return;
+  setCartItemQty(i, Number(item.qty || 0) + 1);
+}
+
+function decrementCartItem(i){
+  var item = cart[i];
+  if(!item) return;
+  setCartItemQty(i, Number(item.qty || 0) - 1);
+}
+
 /** ======= Upsell & Checkout ======= **/
 viewCartBtn.onclick = function(){ 
   // 1. Explicitly arm exit intent on cart view
@@ -1415,10 +1451,19 @@ function refreshCartSheet(){
 
   // Cart rows
   var rows = cart.map(function(x,i){
-    var qtyText = (x.unit==="per100g"||x.unit==="per500g") ? (x.weight+" g") : x.qty;
+    var qtyCell;
+    if(x.unit === "per100g" || x.unit === "per500g"){
+      qtyCell = "<span>"+x.weight+" g</span>";
+    } else {
+      qtyCell = "<div class='qty'>"+
+        "<button class='btn secondary' type='button' onclick='decrementCartItem("+i+")' aria-label='Decrease quantity'>-</button>"+
+        "<input type='number' min='1' step='1' inputmode='numeric' value='"+Number(x.qty||1)+"' onchange='setCartItemQty("+i+", this.value)' aria-label='Quantity for "+x.name.replace(/'/g, "&#39;")+"'>"+
+        "<button class='btn secondary' type='button' onclick='incrementCartItem("+i+")' aria-label='Increase quantity'>+</button>"+
+      "</div>";
+    }
     var addonText = (x.addons && x.addons.length)? "<div class='muted'>Add-ons: "+x.addons.map(function(a){return a.name;}).join(", ")+"</div>" : "";
     var discText = x.discountPct? "<div class='muted'>Discount: -"+(x.discountPct*100).toFixed(0)+"%</div>":"";
-    return "<tr><td><strong>"+x.name+"</strong>"+addonText+discText+"</td><td>"+qtyText+"</td><td>"+fmt(lineTotal(x))+"</td><td><button class=\"btn secondary\" onclick=\"removeFromCart("+i+")\">Remove</button></td></tr>";
+    return "<tr><td><strong>"+x.name+"</strong>"+addonText+discText+"</td><td>"+qtyCell+"</td><td>"+fmt(lineTotal(x))+"</td><td><button class=\"btn secondary\" onclick=\"removeFromCart("+i+")\">Remove</button></td></tr>";
   }).join("");
   cartTableWrap.innerHTML = "<table><thead><tr><th>Item</th><th>Qty</th><th>Total</th><th></th></tr></thead><tbody>"+rows+"</tbody></table>";
 
