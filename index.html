@@ -102,6 +102,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .weight-picker input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:28px;height:28px;border-radius:50%;background:#111;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2)}
     .weight-picker input[type=range]::-moz-range-thumb{width:28px;height:28px;border-radius:50%;background:#111;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2)}
 
+    /* Cart quantity controls – mobile-first */
+    .cart-qty-controls{display:inline-flex;align-items:center;gap:0;border:1px solid var(--accent);border-radius:10px;overflow:hidden}
+    .cart-qty-btn{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:none;background:#f5f5f5;color:#111;font-size:20px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;transition:background .15s}
+    .cart-qty-btn:active{background:#ddd}
+    .cart-qty-value{min-width:44px;text-align:center;font-size:14px;font-weight:600;padding:0 4px;line-height:44px}
+    .cart-remove-btn{width:40px;height:40px;min-width:40px;padding:0;display:flex;align-items:center;justify-content:center;font-size:16px;border-radius:10px}
+    @media(min-width:480px){
+      .cart-qty-btn{width:36px;height:36px;font-size:18px}
+      .cart-qty-value{min-width:40px;line-height:36px}
+    }
+
     /* Keep all product Add buttons to the right */
     .row.space .btn.add-to-cart{margin-left:auto}
 
@@ -1297,6 +1308,25 @@ function updateFreeShipMsg(){
 
 function removeFromCart(i){ cart.splice(i,1); refreshCartSheet(); updateCartUI(); }
 
+function changeCartQty(i, delta){
+  var x = cart[i]; if(!x) return;
+  // Find the menu item to get min and step
+  var menuItem = MENU.find(function(m){ return m.id === x.id; });
+  var step = (menuItem && menuItem.step) ? menuItem.step : 1;
+  var minVal = (menuItem && menuItem.min) ? menuItem.min : 1;
+
+  if(x.unit === "per100g" || x.unit === "per500g"){
+    var newWeight = (x.weight || 0) + (delta * step);
+    if(newWeight < minVal){ removeFromCart(i); return; }
+    x.weight = newWeight;
+  } else {
+    var newQty = (x.qty || 1) + delta;
+    if(newQty < 1){ removeFromCart(i); return; }
+    x.qty = newQty;
+  }
+  refreshCartSheet(); updateCartUI();
+}
+
 /** ======= Upsell & Checkout ======= **/
 viewCartBtn.onclick = function(){ 
   // 1. Explicitly arm exit intent on cart view
@@ -1416,10 +1446,20 @@ function refreshCartSheet(){
 
   // Cart rows
   var rows = cart.map(function(x,i){
-    var qtyText = (x.unit==="per100g"||x.unit==="per500g") ? (x.weight+" g") : x.qty;
+    var qtyDisplay = (x.unit==="per100g"||x.unit==="per500g") ? (x.weight+" g") : x.qty;
     var addonText = (x.addons && x.addons.length)? "<div class='muted'>Add-ons: "+x.addons.map(function(a){return a.name;}).join(", ")+"</div>" : "";
     var discText = x.discountPct? "<div class='muted'>Discount: -"+(x.discountPct*100).toFixed(0)+"%</div>":"";
-    return "<tr><td><strong>"+x.name+"</strong>"+addonText+discText+"</td><td>"+qtyText+"</td><td>"+fmt(lineTotal(x))+"</td><td><button class=\"btn secondary\" onclick=\"removeFromCart("+i+")\">Remove</button></td></tr>";
+    var qtyControls = '<div class="cart-qty-controls">' +
+      '<button type="button" class="cart-qty-btn" onclick="changeCartQty('+i+',-1)" aria-label="Decrease quantity">&minus;</button>' +
+      '<span class="cart-qty-value">'+qtyDisplay+'</span>' +
+      '<button type="button" class="cart-qty-btn" onclick="changeCartQty('+i+',1)" aria-label="Increase quantity">+</button>' +
+      '</div>';
+    return '<tr>' +
+      '<td><strong>'+x.name+'</strong>'+addonText+discText+'</td>' +
+      '<td>'+qtyControls+'</td>' +
+      '<td>'+fmt(lineTotal(x))+'</td>' +
+      '<td><button class="btn secondary cart-remove-btn" onclick="removeFromCart('+i+')" aria-label="Remove '+x.name+'">&#10005;</button></td>' +
+      '</tr>';
   }).join("");
   cartTableWrap.innerHTML = "<table><thead><tr><th>Item</th><th>Qty</th><th>Total</th><th></th></tr></thead><tbody>"+rows+"</tbody></table>";
 
