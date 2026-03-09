@@ -87,6 +87,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     /* Permanently hide the debug badge */
     #devBadge,#devBadge.ok,#devBadge.bad{display:none!important;visibility:hidden!important}
 
+    /* Inline validation */
+    .field-error{border-color:var(--danger)!important;box-shadow:0 0 0 2px rgba(211,51,51,.15)!important}
+    .error-msg{display:none;color:var(--danger);font-size:12px;margin-top:2px}
+    .error-msg.visible{display:block}
+    .form label{position:relative}
+    .submit-error-banner{background:#fef2f2;border:1px solid var(--danger);color:var(--danger);padding:10px 14px;border-radius:12px;font-size:13px;margin-bottom:12px;display:none}
+    .submit-error-banner.visible{display:block}
+    .btn-place-order.loading{opacity:.7;pointer-events:none}
+    .btn-place-order .spinner{display:none;width:16px;height:16px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;margin-left:6px}
+    .btn-place-order.loading .spinner{display:inline-block}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
     /* Weight picker */
     .weight-picker{width:100%;display:flex;flex-direction:column;gap:6px}
     .weight-picker .meta{display:flex;justify-content:space-between;align-items:center}
@@ -1261,6 +1273,10 @@ function updateStickyCheckoutBar() {
     grand: cart.reduce((s,x) => s + lineTotal(x), 0)
   };
   stickyCheckoutTotal.textContent = fmt(totals.grand);
+  // Update Place Order button to show total
+  if(stickyPlaceOrder && !stickyPlaceOrder.classList.contains('loading')){
+    stickyPlaceOrder.innerHTML = 'Place Order — ' + fmt(totals.grand);
+  }
 }
 
 function updateFreeShipMsg(){
@@ -1332,8 +1348,14 @@ viewCartBtn.onclick = function(){
   // 1. Explicitly arm exit intent on cart view
   if (typeof window.armExitIntent === 'function') window.armExitIntent();
   
-  refreshCartSheet(); 
-  cartSheet.classList.add("active"); 
+  refreshCartSheet();
+  cartSheet.classList.add("active");
+
+  // Auto-scroll to checkout form on open (reduces scroll distance on mobile)
+  setTimeout(function(){
+    var formEl = document.getElementById('checkoutForm');
+    if(formEl && cart.length > 0) formEl.scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 250);
 
 // GA4: begin_checkout
 try {
@@ -1461,7 +1483,9 @@ function refreshCartSheet(){
       '<td><button class="btn secondary cart-remove-btn" onclick="removeFromCart('+i+')" aria-label="Remove '+x.name+'">&#10005;</button></td>' +
       '</tr>';
   }).join("");
-  cartTableWrap.innerHTML = "<table><thead><tr><th>Item</th><th>Qty</th><th>Total</th><th></th></tr></thead><tbody>"+rows+"</tbody></table>";
+  cartTableWrap.innerHTML = "<details id='cartDetails'><summary style='cursor:pointer;font-weight:700;padding:8px 0'>Your items ("+cart.length+")</summary>" +
+    "<table><thead><tr><th>Item</th><th>Qty</th><th>Total</th><th></th></tr></thead><tbody>"+rows+"</tbody></table>" +
+    "</details>";
 
   // === Totals (with coupon support) ===
   (function(){
@@ -1554,6 +1578,21 @@ function refreshCartSheet(){
   
   updateFreeShipMsg();
 
+  // Update advance payment notice in checkout form
+  (function updateAdvanceNotice(){
+    var notice = document.getElementById('advanceNotice');
+    if(!notice) return;
+    var t = typeof computeTotalsWithCoupon === 'function' ? computeTotalsWithCoupon() : null;
+    var grand = t ? t.grand : cart.reduce(function(s,x){ return s + lineTotal(x); },0);
+    if(grand > POLICY.ADVANCE_MIN){
+      var adv = Math.round(grand * POLICY.ADVANCE_PERCENT);
+      notice.style.display = 'block';
+      notice.innerHTML = '⚠️ Orders over Tk 5,000 require a <b>30% advance</b> (~<b>' + fmt(adv) + '</b>) via bKash/Nagad to <b>01789246166</b> after placing your order.';
+    } else {
+      notice.style.display = 'none';
+    }
+  })();
+
   // === Coupon UI (moved above add-ons) ===
   couponBox.innerHTML = `
     <label>Coupon Code (optional)
@@ -1626,26 +1665,36 @@ function refreshCartSheet(){
   // Checkout form (date + time chips etc.)
   var minDate = minDeliveryDateISO();
   checkoutForm.innerHTML = `
+    <div id="submitErrorBanner" class="submit-error-banner"></div>
     <h3>Delivery details</h3>
-    <label>Full Name <input required id="f_name" placeholder="Your name"/></label>
-    <label>Mobile Number <input required id="f_phone" placeholder="01XXXXXXXXX" inputmode="tel" pattern="01[0-9]{9}"/></label>
-    <label>Email (optional) <input type="email" id="f_email" placeholder="you@example.com"/></label>
-    <label>Address <textarea required id="f_address" rows="2" placeholder="Flat/House, Road, Area, Dhaka"></textarea></label>
+    <label>Full Name <input required id="f_name" placeholder="Your name"/>
+      <span class="error-msg" id="err_name">Please enter your name</span></label>
+    <label>Mobile Number <input required id="f_phone" placeholder="01XXXXXXXXX" inputmode="tel" pattern="01[0-9]{9}"/>
+      <span class="error-msg" id="err_phone">Enter a valid 11-digit number starting with 01</span></label>
+    <label>Email (optional) <input type="email" id="f_email" placeholder="you@example.com"/>
+      <span class="error-msg" id="err_email">Please enter a valid email or leave it blank</span></label>
+    <label>Address <textarea required id="f_address" rows="2" placeholder="Flat/House, Road, Area, Dhaka"></textarea>
+      <span class="error-msg" id="err_address">Please enter your delivery address</span></label>
 
     <label>Delivery Date
       <input type="date" required id="f_date" min="${minDate}"/>
+      <span class="error-msg" id="err_date">Please select a delivery date</span>
     </label>
 
     <label style="display:block">Preferred Time
       <div id="timeChipGrid" class="slot-grid" role="radiogroup" aria-label="Preferred time slot"></div>
+      <span class="error-msg" id="err_time">Please choose a time slot</span>
     </label>
 
     <label>Payment Option
       <select id="f_payment" required>
         <option value="COD">Cash on Delivery (COD)</option>
         <option value="bKash">bKash</option>
+        <option value="Nagad">Nagad</option>
       </select>
     </label>
+
+    <div id="advanceNotice" class="note" style="display:none;background:#fff8ed;border-color:var(--warn);margin:4px 0 8px"></div>
 
     <label>Any sauce preferences or notes?
       <input id="f_notes" placeholder="e.g., BBQ x2, Cheese x1; gate code; call on arrival."/>
@@ -1851,6 +1900,26 @@ function computeTotalsWithCoupon(){
   return { subtotal, couponSavings, delivery, grand };
 }
 
+function clearFieldError(id){
+  var el = document.getElementById(id);
+  var err = document.getElementById('err_' + id.replace('f_',''));
+  if(el) el.classList.remove('field-error');
+  if(err) err.classList.remove('visible');
+}
+function showFieldError(id, errId){
+  var el = document.getElementById(id);
+  var err = document.getElementById(errId);
+  if(el) el.classList.add('field-error');
+  if(err) err.classList.add('visible');
+  if(el) el.scrollIntoView({ behavior:'smooth', block:'center' });
+  return false;
+}
+// Wire blur listeners for real-time clearing
+['f_name','f_phone','f_address','f_date'].forEach(function(id){
+  var el = document.getElementById(id);
+  if(el) el.addEventListener('input', function(){ clearFieldError(id); });
+});
+
 async function submitOrder(){
   var name = document.getElementById("f_name").value.trim();
   var phone = document.getElementById("f_phone").value.trim();
@@ -1864,9 +1933,32 @@ async function submitOrder(){
   var payment = document.getElementById("f_payment").value;
   var notes = document.getElementById("f_notes").value.trim();
 
-  if(!name || !phone || !address || !date || !time || !payment){ alert("Please fill in all required fields."); return; }
-  if(email && !emailEl.checkValidity()){ alert("Please enter a valid email or leave it blank."); return; }
-  var minDate = minDeliveryDateISO(); if(date < minDate){ alert("Same-day delivery is not available. Earliest date is "+minDate+"."); return; }
+  // Clear all previous errors
+  ['name','phone','email','address','date','time'].forEach(function(k){
+    clearFieldError('f_' + k);
+  });
+  var banner = document.getElementById('submitErrorBanner');
+  if(banner){ banner.classList.remove('visible'); banner.textContent = ''; }
+
+  // Inline validation — highlight first invalid field and scroll to it
+  if(!name) return showFieldError('f_name','err_name');
+  if(!phone || !/^01[0-9]{9}$/.test(phone)) return showFieldError('f_phone','err_phone');
+  if(email && !emailEl.checkValidity()) return showFieldError('f_email','err_email');
+  if(!address) return showFieldError('f_address','err_address');
+  if(!date) return showFieldError('f_date','err_date');
+  if(!time) return showFieldError('f_time','err_time');
+  var minDate = minDeliveryDateISO();
+  if(date < minDate){
+    var errDate = document.getElementById('err_date');
+    if(errDate) errDate.textContent = "Earliest available date is " + minDate;
+    return showFieldError('f_date','err_date');
+  }
+
+  // Loading state
+  if(stickyPlaceOrder){
+    stickyPlaceOrder.classList.add('loading');
+    stickyPlaceOrder.innerHTML = 'Placing Order… <span class="spinner"></span>';
+  }
 
   var orderNo = Date.now();
 
@@ -1916,7 +2008,19 @@ async function submitOrder(){
   order.pricing.advanceDue = advanceDue;
 
   var ok = await postToAPI({ payload: JSON.stringify(order) });
-  if(!ok){ alert("Could not submit the order. Please try again or message us on Facebook."); return; }
+
+  // Restore button regardless of outcome
+  if(stickyPlaceOrder){
+    stickyPlaceOrder.classList.remove('loading');
+    stickyPlaceOrder.innerHTML = 'Place Order';
+  }
+
+  if(!ok){
+    var banner = document.getElementById('submitErrorBanner');
+    if(banner){ banner.textContent = 'Could not submit the order. Please try again or message us on Messenger.'; banner.classList.add('visible'); banner.scrollIntoView({behavior:'smooth',block:'center'}); }
+    updateStickyCheckoutBar();
+    return;
+  }
 
   var tyHead = document.getElementById("tyHeadline");
   tyHead.textContent = "Order No. " + order.orderNo + " is now confirmed!";
@@ -1954,7 +2058,7 @@ var advBox = document.getElementById("tyAdvance");
   if (order.pricing.grand > POLICY.ADVANCE_MIN) {
     var advAmt = Math.round(order.pricing.grand * POLICY.ADVANCE_PERCENT);
     advBox.style.display = "block";
-    advBox.innerHTML = "<div style='font-size:16px'><b>Advance required:</b> Please <b>Send Money</b> via bKash<br>30% of your total (<b>"+fmt(advAmt)+"</b>) to<br><b>01789246166</b></div>";
+    advBox.innerHTML = "<div style='font-size:16px'><b>Advance required:</b> Please <b>Send Money</b> via bKash or Nagad<br>30% of your total (<b>"+fmt(advAmt)+"</b>) to<br><b>01789246166</b></div>";
   } else { advBox.style.display = "none"; }
 
   cart = [];
