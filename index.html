@@ -511,22 +511,24 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 /* ===== Review Gallery CTA Button (in tabs row) ===== */
 @keyframes reviewGlow {
-  0%, 100% { box-shadow: 0 0 6px rgba(37,211,102,.4), 0 0 16px rgba(37,211,102,.2); }
-  50% { box-shadow: 0 0 12px rgba(37,211,102,.7), 0 0 28px rgba(37,211,102,.4); }
+  0%, 100% { box-shadow: 0 2px 8px rgba(230,57,70,.35), 0 0 16px rgba(255,107,53,.2); }
+  50% { box-shadow: 0 2px 12px rgba(230,57,70,.6), 0 0 28px rgba(255,107,53,.4); }
 }
 .review-gallery-btn {
   white-space: nowrap;
-  background: linear-gradient(135deg, #25D366, #128C7E);
+  background: linear-gradient(135deg, #ff6b35, #e63946);
   color: #fff;
   font-weight: 800;
   font-size: 14px;
-  padding: 12px 16px;
+  padding: 12px 20px;
   border-radius: 999px;
   border: none;
   min-height: 48px;
   animation: reviewGlow 2s ease-in-out infinite;
   cursor: pointer;
   flex-shrink: 0;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 8px rgba(230,57,70,.35);
 }
 .review-gallery-btn:active { transform: scale(.96); }
 
@@ -1165,7 +1167,7 @@ function buildTabs(){
   var rb = document.createElement("button");
   rb.type = "button";
   rb.className = "review-gallery-btn";
-  rb.textContent = "\u2B50 Reviews";
+  rb.textContent = "\u2B50 See Our Reviews";
   rb.onclick = function(){ if(typeof openReviewGallery==='function') openReviewGallery(); };
   tabsEl.appendChild(rb);
   for(var i=0;i<categories.length;i++){
