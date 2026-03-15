@@ -1805,44 +1805,51 @@ function refreshCartSheet(){
    const dateEl = document.getElementById('f_date');
    if (!dateEl) return;
 
-   // 🛑 HOLIDAY CONFIGURATION
-   const HOLIDAY_START = "2026-02-10"; // Start blocked date
-   const HOLIDAY_END   = "2026-02-12"; // End blocked date
-   const NEXT_OPEN     = "2026-02-13"; // First available day after
+   // 🛑 HOLIDAY CONFIGURATION — add new holiday periods here
+   const HOLIDAYS = [
+     { start: "2026-02-10", end: "2026-02-12", nextOpen: "2026-02-13", label: "Feb 10-12" },
+     { start: "2026-03-18", end: "2026-03-24", nextOpen: "2026-03-25", label: "Mar 18-24" },
+   ];
+
+   function getHoliday(dateStr) {
+     for (var i = 0; i < HOLIDAYS.length; i++) {
+       if (dateStr >= HOLIDAYS[i].start && dateStr <= HOLIDAYS[i].end) return HOLIDAYS[i];
+     }
+     return null;
+   }
+
+   // Find the next open date after any overlapping holiday chain
+   function resolveDate(dateStr) {
+     var h = getHoliday(dateStr);
+     return h ? resolveDate(h.nextOpen) : dateStr;
+   }
 
    const setMinAndValue = () => {
-     let md = minDeliveryDateISO(); // Calculate standard minimum (next day/day after)
-     
-     // 1. If the calculated minimum falls exactly on a holiday, bump valid min to Next Open
-     if (md >= HOLIDAY_START && md <= HOLIDAY_END) {
-       md = NEXT_OPEN;
-     }
+     let md = minDeliveryDateISO();
+     md = resolveDate(md);
 
      dateEl.min = md;
 
-     // 2. If current selection is empty or too early (before min), snap to min
      if (!dateEl.value || dateEl.value < md) {
         dateEl.value = md;
-     } 
-     
-     // 3. Specific check: If selection is inside holiday range, snap to Next Open
-     if (dateEl.value >= HOLIDAY_START && dateEl.value <= HOLIDAY_END) {
-        dateEl.value = NEXT_OPEN;
+     }
+
+     var hv = getHoliday(dateEl.value);
+     if (hv) {
+        dateEl.value = hv.nextOpen;
      }
    };
 
-   // Run immediately to set initial valid date
    setMinAndValue();
 
-   // Re-validate when user interacts
    dateEl.addEventListener('focus', setMinAndValue);
    dateEl.addEventListener('click', setMinAndValue);
-   
-   // Alert user specifically if they try to change to a blocked date
+
    dateEl.addEventListener('change', function() {
-     if (this.value >= HOLIDAY_START && this.value <= HOLIDAY_END) {
-       alert(`We are on holiday from Feb 10-12. Please select a date from Feb 13 onwards.`);
-       this.value = NEXT_OPEN;
+     var h = getHoliday(this.value);
+     if (h) {
+       alert('We are on holiday from ' + h.label + '. Please select a date from ' + h.nextOpen + ' onwards.');
+       this.value = h.nextOpen;
      }
    });
  })();
@@ -1987,6 +1994,18 @@ async function submitOrder(){
   if(!name || !phone || !address || !date || !time || !payment){ alert("Please fill in all required fields."); return; }
   if(email && !emailEl.checkValidity()){ alert("Please enter a valid email or leave it blank."); return; }
   var minDate = minDeliveryDateISO(); if(date < minDate){ alert("Same-day delivery is not available. Earliest date is "+minDate+"."); return; }
+
+  // Block orders on holiday dates
+  var _HOLIDAYS = [
+    { start: "2026-02-10", end: "2026-02-12", label: "Feb 10-12" },
+    { start: "2026-03-18", end: "2026-03-24", label: "Mar 18-24" },
+  ];
+  for (var hi = 0; hi < _HOLIDAYS.length; hi++) {
+    if (date >= _HOLIDAYS[hi].start && date <= _HOLIDAYS[hi].end) {
+      alert("We are on holiday from " + _HOLIDAYS[hi].label + ". Please choose a different delivery date.");
+      return;
+    }
+  }
 
   var orderNo = Date.now();
 
