@@ -612,6 +612,15 @@ nav.tabs button.review-gallery-btn {
   transition: background .2s;
 }
 .review-gallery-dots .dot.active { background: #25D366; }
+.review-gallery-fb-banner {
+  position: absolute; bottom: 32px; left: 0; right: 0;
+  text-align: center; z-index: 2;
+  color: rgba(255,255,255,.85); font-size: 13px; font-weight: 600;
+  padding: 6px 16px;
+}
+.review-gallery-fb-banner a {
+  color: #4267B2; text-decoration: underline; font-weight: 700;
+}
 
   </style>
 
@@ -2428,6 +2437,9 @@ buildTabs(); buildList(); updateCartUI();
     <button type="button" class="review-gallery-nav next" id="galleryNext" aria-label="Next">&#8250;</button>
   </div>
   <div class="review-gallery-dots" id="galleryDots"></div>
+  <div class="review-gallery-fb-banner">
+    See more reviews on our <a href="https://www.facebook.com/meataholicbd" target="_blank" rel="noopener">Facebook page</a>
+  </div>
 </div>
 
 <script>
@@ -2477,8 +2489,10 @@ buildTabs(); buildList(); updateCartUI();
     for (var d = 0; d < dots.length; d++) dots[d].className = 'dot' + (d === current ? ' active' : '');
   }
 
-  // Open / close (iOS-safe scroll lock)
+  // Open / close (iOS-safe scroll lock + back-button support)
   var savedScrollY = 0;
+  var galleryOpen = false;
+
   window.openReviewGallery = function(){
     goTo(0);
     savedScrollY = window.scrollY;
@@ -2486,21 +2500,43 @@ buildTabs(); buildList(); updateCartUI();
     document.body.style.top = '-' + savedScrollY + 'px';
     document.body.style.width = '100%';
     overlay.classList.add('active');
+    galleryOpen = true;
+    history.pushState({ reviewGallery: true }, '');
   };
   function closeGallery(){
+    if (!galleryOpen) return;
+    galleryOpen = false;
     overlay.classList.remove('active');
     document.body.style.position = '';
     document.body.style.top = '';
     document.body.style.width = '';
     window.scrollTo(0, savedScrollY);
   }
-  closeBtn.onclick = closeGallery;
+
+  // Close gallery on browser back button
+  window.addEventListener('popstate', function(e){
+    if (galleryOpen) {
+      closeGallery();
+    }
+  });
+
+  closeBtn.onclick = function(){
+    closeGallery();
+    // Pop the history entry we pushed so back button doesn't revisit it
+    if (history.state && history.state.reviewGallery) history.back();
+  };
   overlay.addEventListener('click', function(e){
-    if (e.target === overlay) closeGallery();
+    if (e.target === overlay) {
+      closeGallery();
+      if (history.state && history.state.reviewGallery) history.back();
+    }
   });
   document.addEventListener('keydown', function(e){
-    if (!overlay.classList.contains('active')) return;
-    if (e.key === 'Escape') closeGallery();
+    if (!galleryOpen) return;
+    if (e.key === 'Escape') {
+      closeGallery();
+      if (history.state && history.state.reviewGallery) history.back();
+    }
     if (e.key === 'ArrowLeft') goTo(current - 1);
     if (e.key === 'ArrowRight') goTo(current + 1);
   });
