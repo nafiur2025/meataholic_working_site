@@ -509,6 +509,110 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   justify-content: center;
 }
 
+/* ===== Review Gallery CTA Button (in tabs row) ===== */
+@keyframes reviewGlow {
+  0%, 100% { box-shadow: 0 2px 8px rgba(230,57,70,.35), 0 0 16px rgba(255,107,53,.2); }
+  50% { box-shadow: 0 2px 12px rgba(230,57,70,.6), 0 0 28px rgba(255,107,53,.4); }
+}
+.review-gallery-btn {
+  white-space: nowrap;
+  background: linear-gradient(135deg, #ff6b35, #e63946);
+  color: #fff;
+  font-weight: 800;
+  font-size: 14px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: none;
+  min-height: 48px;
+  animation: reviewGlow 2s ease-in-out infinite;
+  cursor: pointer;
+  flex-shrink: 0;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 8px rgba(230,57,70,.35);
+}
+.review-gallery-btn:active { transform: scale(.96); }
+
+/* ===== Review Gallery Overlay ===== */
+.review-gallery-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  background: rgba(0,0,0,.95);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.review-gallery-overlay.active { display: flex; }
+.review-gallery-header {
+  position: absolute; top: 0; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px;
+  z-index: 2;
+}
+.review-gallery-counter {
+  color: #fff; font-size: 14px; font-weight: 700;
+  background: rgba(0,0,0,.5); padding: 4px 12px; border-radius: 999px;
+}
+.review-gallery-close {
+  all: unset; cursor: pointer;
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 28px; font-weight: 700;
+  background: rgba(0,0,0,.5); border-radius: 50%;
+}
+.review-gallery-close:active { opacity: .7; }
+.review-gallery-viewport {
+  position: relative;
+  width: 100%; flex: 1;
+  overflow: hidden;
+  display: flex; align-items: center;
+}
+.review-gallery-track {
+  display: flex;
+  transition: transform .3s ease;
+  height: 100%;
+  will-change: transform;
+}
+.review-gallery-track .slide {
+  min-width: 100vw; width: 100vw;
+  display: flex; align-items: center; justify-content: center;
+  padding: 56px 8px 60px;
+}
+.review-gallery-track .slide img {
+  max-width: 100%; max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.review-gallery-nav {
+  display: none;
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 44px; height: 44px;
+  background: rgba(255,255,255,.15); border: none; border-radius: 50%;
+  color: #fff; font-size: 24px; cursor: pointer;
+  align-items: center; justify-content: center;
+  z-index: 2;
+}
+.review-gallery-nav.prev { left: 8px; }
+.review-gallery-nav.next { right: 8px; }
+@media(min-width:768px){
+  .review-gallery-nav { display: flex; }
+}
+.review-gallery-nav:hover { background: rgba(255,255,255,.3); }
+.review-gallery-dots {
+  position: absolute; bottom: 12px; left: 0; right: 0;
+  display: flex; justify-content: center; gap: 6px;
+  z-index: 2; flex-wrap: wrap; padding: 0 16px;
+}
+.review-gallery-dots .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(255,255,255,.35); cursor: pointer;
+  transition: background .2s;
+}
+.review-gallery-dots .dot.active { background: #25D366; }
+
   </style>
 
   <!-- Auto-bust cache once after deploy -->
@@ -1059,6 +1163,13 @@ document.getElementById("logo").addEventListener("click", function () {
 /** ======= UI ======= **/
 function buildTabs(){
   tabsEl.innerHTML = "";
+  // Review gallery CTA — first pill in tab row
+  var rb = document.createElement("button");
+  rb.type = "button";
+  rb.className = "review-gallery-btn";
+  rb.textContent = "\u2B50 See Our Reviews";
+  rb.onclick = function(){ if(typeof openReviewGallery==='function') openReviewGallery(); };
+  tabsEl.appendChild(rb);
   for(var i=0;i<categories.length;i++){
     (function(t){
       var b = document.createElement("button");
@@ -2302,6 +2413,127 @@ buildTabs(); buildList(); updateCartUI();
     // We stay at 'base'. The user can now exit freely with one more Back press.
   });
 
+})();
+</script>
+
+<!-- ===== Review Gallery Overlay ===== -->
+<div class="review-gallery-overlay" id="reviewGalleryOverlay">
+  <div class="review-gallery-header">
+    <span class="review-gallery-counter" id="galleryCounter">1 / 17</span>
+    <button type="button" class="review-gallery-close" id="closeReviewGallery" aria-label="Close gallery">&times;</button>
+  </div>
+  <div class="review-gallery-viewport">
+    <div class="review-gallery-track" id="galleryTrack"></div>
+    <button type="button" class="review-gallery-nav prev" id="galleryPrev" aria-label="Previous">&#8249;</button>
+    <button type="button" class="review-gallery-nav next" id="galleryNext" aria-label="Next">&#8250;</button>
+  </div>
+  <div class="review-gallery-dots" id="galleryDots"></div>
+</div>
+
+<script>
+(function(){
+  /* ---------- Review Gallery ---------- */
+  var REVIEW_IMAGES = [];
+  for (var i = 1; i <= 17; i++) REVIEW_IMAGES.push('images/reviews/review-' + i + '.jpg');
+
+  var overlay   = document.getElementById('reviewGalleryOverlay');
+  var track     = document.getElementById('galleryTrack');
+  var counter   = document.getElementById('galleryCounter');
+  var dotsWrap  = document.getElementById('galleryDots');
+  var prevBtn   = document.getElementById('galleryPrev');
+  var nextBtn   = document.getElementById('galleryNext');
+  var closeBtn  = document.getElementById('closeReviewGallery');
+  var current   = 0;
+  var total     = REVIEW_IMAGES.length;
+  var startX    = 0;
+  var deltaX    = 0;
+  var dragging  = false;
+
+  // Build slides + dots
+  REVIEW_IMAGES.forEach(function(src, idx){
+    var slide = document.createElement('div');
+    slide.className = 'slide';
+    var img = document.createElement('img');
+    img.alt = 'Customer review ' + (idx + 1);
+    img.loading = 'lazy';
+    img.src = src;
+    img.onerror = function(){ this.style.display = 'none'; };
+    slide.appendChild(img);
+    track.appendChild(slide);
+
+    var dot = document.createElement('span');
+    dot.className = 'dot' + (idx === 0 ? ' active' : '');
+    dot.onclick = (function(i){ return function(){ goTo(i); }; })(idx);
+    dotsWrap.appendChild(dot);
+  });
+
+  function goTo(idx){
+    if (idx < 0) idx = total - 1;
+    if (idx >= total) idx = 0;
+    current = idx;
+    track.style.transform = 'translateX(' + (-current * 100) + 'vw)';
+    counter.textContent = (current + 1) + ' / ' + total;
+    var dots = dotsWrap.querySelectorAll('.dot');
+    for (var d = 0; d < dots.length; d++) dots[d].className = 'dot' + (d === current ? ' active' : '');
+  }
+
+  // Open / close (iOS-safe scroll lock)
+  var savedScrollY = 0;
+  window.openReviewGallery = function(){
+    goTo(0);
+    savedScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = '-' + savedScrollY + 'px';
+    document.body.style.width = '100%';
+    overlay.classList.add('active');
+  };
+  function closeGallery(){
+    overlay.classList.remove('active');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, savedScrollY);
+  }
+  closeBtn.onclick = closeGallery;
+  overlay.addEventListener('click', function(e){
+    if (e.target === overlay) closeGallery();
+  });
+  document.addEventListener('keydown', function(e){
+    if (!overlay.classList.contains('active')) return;
+    if (e.key === 'Escape') closeGallery();
+    if (e.key === 'ArrowLeft') goTo(current - 1);
+    if (e.key === 'ArrowRight') goTo(current + 1);
+  });
+
+  // Nav buttons
+  prevBtn.onclick = function(e){ e.stopPropagation(); goTo(current - 1); };
+  nextBtn.onclick = function(e){ e.stopPropagation(); goTo(current + 1); };
+
+  // Touch swipe
+  var viewport = overlay.querySelector('.review-gallery-viewport');
+  viewport.addEventListener('touchstart', function(e){
+    startX = e.touches[0].clientX;
+    deltaX = 0;
+    dragging = true;
+    track.style.transition = 'none';
+  }, {passive: true});
+
+  viewport.addEventListener('touchmove', function(e){
+    if (!dragging) return;
+    deltaX = e.touches[0].clientX - startX;
+    track.style.transform = 'translateX(' + (-current * window.innerWidth + deltaX) + 'px)';
+  }, {passive: true});
+
+  viewport.addEventListener('touchend', function(){
+    if (!dragging) return;
+    dragging = false;
+    track.style.transition = 'transform .3s ease';
+    if (Math.abs(deltaX) > 50) {
+      goTo(deltaX > 0 ? current - 1 : current + 1);
+    } else {
+      goTo(current);
+    }
+  });
 })();
 </script>
 
