@@ -2475,15 +2475,22 @@ buildTabs(); buildList(); updateCartUI();
     for (var d = 0; d < dots.length; d++) dots[d].className = 'dot' + (d === current ? ' active' : '');
   }
 
-  // Open / close
+  // Open / close (iOS-safe scroll lock)
+  var savedScrollY = 0;
   window.openReviewGallery = function(){
     goTo(0);
+    savedScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = '-' + savedScrollY + 'px';
+    document.body.style.width = '100%';
     overlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
   };
   function closeGallery(){
     overlay.classList.remove('active');
-    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, savedScrollY);
   }
   closeBtn.onclick = closeGallery;
   overlay.addEventListener('click', function(e){
