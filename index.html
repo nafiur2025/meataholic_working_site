@@ -434,6 +434,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       transition: background .15s;
     }
     .sticky-checkout-bar .btn-place-order:hover{background:var(--brand-dark)}
+    .sticky-checkout-bar .btn-back-sticky {
+      background: transparent;
+      border: 1.5px solid var(--accent);
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: var(--font-body);
+      transition: background .15s;
+    }
+    .sticky-checkout-bar .btn-back-sticky:hover{background:var(--accent)}
 
     /* CRO FIX #5: Free Delivery Progress Bar */
     .free-delivery-progress {
@@ -930,19 +944,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div id="couponBox" style="margin-top:16px"></div>
         <h3 class="section-heading" style="margin:16px 0 8px">Add-ons & sauces</h3>
         <div class="grid" id="upsellInline"></div>
-        <div class="checkout-nav" style="margin-top:16px">
-          <button class="btn primary-cta" onclick="goToCheckoutStep(2)">Continue to Details →</button>
-        </div>
       </div>
 
       <!-- STEP 2: Delivery Details -->
       <div class="checkout-panel" id="checkoutStep2">
         <div class="form" id="checkoutForm"></div>
         <div class="note" style="margin-top:12px">We smoke low & slow. <b>No same-day orders</b>. Next-day delivery only (cut-off 11:59 PM).</div>
-        <div class="checkout-nav">
-          <button class="btn secondary" onclick="goToCheckoutStep(1)">← Back</button>
-          <button class="btn primary-cta" onclick="validateAndGoStep3()">Review Order →</button>
-        </div>
       </div>
 
       <!-- STEP 3: Confirm & Pay -->
@@ -957,15 +964,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <div class="trust-badge"><span class="icon">🚚</span>Next-Day Dhaka</div>
         </div>
         
-        <div class="checkout-nav">
-          <button class="btn secondary" onclick="goToCheckoutStep(2)">← Back</button>
-          <button class="btn primary-cta" id="finalPlaceOrder" onclick="submitOrder()" style="flex:2">Place Order</button>
-        </div>
       </div>
     </div>
-    
+
     <!-- Sticky Order Summary Bar -->
     <div id="stickyCheckoutBar" class="sticky-checkout-bar" style="display:none">
+      <button class="btn-back-sticky" id="stickyBackBtn" style="display:none" onclick="goToCheckoutStep(currentCheckoutStep - 1)">← Back</button>
       <div class="total-section">
         <span class="total-label">Grand Total</span>
         <span class="total-amount" id="stickyCheckoutTotal">৳ 0</span>
@@ -1057,6 +1061,11 @@ function goToCheckoutStep(step) {
     if (step === 1) stickyPlaceOrder.textContent = 'Continue →';
     else if (step === 2) stickyPlaceOrder.textContent = 'Review Order →';
     else stickyPlaceOrder.textContent = 'Place Order';
+  }
+  // Show/hide Back button in sticky bar
+  var stickyBack = document.getElementById('stickyBackBtn');
+  if (stickyBack) {
+    stickyBack.style.display = (step > 1) ? 'inline-block' : 'none';
   }
 }
 
