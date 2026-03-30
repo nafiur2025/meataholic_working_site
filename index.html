@@ -1194,10 +1194,10 @@ const MENU = [
   { id:"brisket_sandwich", name:"Brisket Sandwich", category:"Casual Bites & Comfort Food", price:700, unit:"perPiece", min:1, available:true, description:"Smoked brisket, BBQ sauce, wasabi mayo & slaw.", img:PLACEHOLDER_IMAGES.brisket_sandwich, addons:[{ id:"bs_cheese", name:"Cheese sauce (promo: FREE)", price:0 }, { id:"bs_meat", name:"Extra meat (+25g)", price:160 }] },
   { id:"brisket", name:"Smoked Brisket (Boneless)", category:"Smokehouse Classics", price:688, unit:"per100g", step:100, min:300, available:true, description:"Melt-in-your-mouth brisket, smoked low & slow.", notes:"Free sides only with 1kg+ (4 mash + 2 sauces).", img:PLACEHOLDER_IMAGES.brisket },
   { id:"brisket_soup", name:"Spicy Brisket Soup", category:"Casual Bites & Comfort Food", price:750, unit:"perPiece", min:1, available:true, description:"A deep, spicy broth smoked & simmered for 16 hours — loaded with smoked brisket slices, juicy meatballs, and noodles.", img:PLACEHOLDER_IMAGES.brisket_soup, addons:[{ id:"bs_meat", name:"Extra meat (+25g)", price:160 }] },
-  { id:"short_ribs", name:"Smoked Short Ribs (Bone-in)", category:"Smokehouse Classics", price:2940, unit:"per500g", step:500, min:500, available:true, description:"Thick-cut, smoky and rich with bone-in flavour.", notes:"1kg+ includes 2 mash + 2 sauces.", img:PLACEHOLDER_IMAGES.short_ribs },
+  { id:"short_ribs", name:"Smoked Short Ribs (Bone-in)", category:"Smokehouse Classics", price:588, unit:"per100g", step:100, min:500, available:true, description:"Thick-cut, smoky and rich with bone-in flavour.", notes:"1kg+ includes 2 mash + 2 sauces.", img:PLACEHOLDER_IMAGES.short_ribs },
   { id:"chicken", name:"Whole Smoked Chicken", category:"Smokehouse Classics", price:980, unit:"perPiece", min:1, available:true, description:"Juicy, smoky — perfect for sharing.", notes:"Includes yellow rice + choose Mushroom Peppercorn or Sweet & Spicy BBQ.", img:PLACEHOLDER_IMAGES.chicken },  
   { id:"lasagne_medium", name:"Lasagne — Medium", category:"Casual Bites & Comfort Food", price:950, unit:"fixed", min:1, available:true, description:"Rich, cheesy layers baked to perfection.", img:PLACEHOLDER_IMAGES.lasagne_medium },
-  { id:"tomahawk", name:"Tomahawk Ribeye Steak", category:"Smokehouse Classics", price:2940, unit:"per500g", step:500, min:500, available:true, description:"Smoked and served medium to medium-rare.", notes:"Free sides only with 1kg+ (4 mash + 2 sauces).", img:PLACEHOLDER_IMAGES.tomahawk },
+  { id:"tomahawk", name:"Tomahawk Ribeye Steak", category:"Smokehouse Classics", price:588, unit:"per100g", step:100, min:500, available:true, description:"Smoked and served medium to medium-rare.", notes:"Free sides only with 1kg+ (4 mash + 2 sauces).", img:PLACEHOLDER_IMAGES.tomahawk },
   { id:"side_mash_small", name:"Mashed Potatoes — Small (serves 2)", category:"Sides & Sauces", price:240, unit:"fixed", min:1, available:true, img:PLACEHOLDER_IMAGES.side_mash_small },
   { id:"jacket_potato", name:"Smoked Jacket Chilli Cheese Potatoes", category:"Casual Bites & Comfort Food", price:320, unit:"perPiece", min:1, available:true, description:"Loaded with chilli con carne, beans and cheese.", img:PLACEHOLDER_IMAGES.jacket_potato },
   { id:"hotdog", name:"Meataholic Signature Hotdog", category:"Casual Bites & Comfort Food", price:400, unit:"perPiece", min:1, available:false, description:"Soft buns, wasabi mayo & crispy onions. (Unavailable)", img:PLACEHOLDER_IMAGES.hotdog },
@@ -1265,7 +1265,7 @@ function clampStep(v, step, min){ var rounded = Math.round(v/step)*step; return 
 function createWeightPicker(item){
   var step = item.step || (item.unit==="per100g" ? 100 : 500);
   var min  = Math.max(step, item.min || step);
-  var max  = Math.max(min*5, item.unit==="per100g" ? 3000 : 5000);
+  var max  = Math.max(min*5, item.unit==="per100g" ? 2000 : 5000);
   var weight = min;
   var wrap = document.createElement("div"); wrap.className = "weight-picker";
   var meta = document.createElement("div"); meta.className="meta";
