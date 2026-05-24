@@ -1010,6 +1010,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       </div>
     </div>
   </div>
+
+  <!-- HOLIDAY NOTICE POPUP -->
+  <div class="exit-toast-wrap" id="holidayNotice">
+    <div class="exit-toast">
+      <div class="badge">Holiday Notice</div>
+      <h2>We're on Holiday</h2>
+      <p>Meataholic will be closed from <b>26 May</b> to <b>31 May</b>. Orders you place now will be delivered from <b>1 June</b> onwards. Thank you for your patience!</p>
+      <div class="btn-group">
+        <button class="btn-claim" id="holidayNoticeOk">Got it</button>
+      </div>
+    </div>
+  </div>
 <script>
 /** ======= CONFIG ======= **/
 const APPS_SCRIPT_URL = "https://meataholicbd.com/php-frontend/save_order.php";
@@ -1746,6 +1758,7 @@ function refreshCartSheet(){
     const HOLIDAYS = [
       { start: "2026-02-10", end: "2026-02-12", nextOpen: "2026-02-13", label: "Feb 10-12" },
       { start: "2026-03-18", end: "2026-03-24", nextOpen: "2026-03-25", label: "Mar 18-24" },
+      { start: "2026-05-26", end: "2026-05-31", nextOpen: "2026-06-01", label: "May 26-31" },
     ];
     function getHoliday(dateStr) { for (var i = 0; i < HOLIDAYS.length; i++) { if (dateStr >= HOLIDAYS[i].start && dateStr <= HOLIDAYS[i].end) return HOLIDAYS[i]; } return null; }
     function resolveDate(dateStr) { var h = getHoliday(dateStr); return h ? resolveDate(h.nextOpen) : dateStr; }
@@ -1807,7 +1820,7 @@ async function submitOrder(){
   if(!name || !phone || !address || !date || !time || !payment){ alert("Please fill in all required fields."); return; }
   if(email && !emailEl.checkValidity()){ alert("Please enter a valid email or leave it blank."); return; }
   var minDate = minDeliveryDateISO(); if(date < minDate){ alert("Earliest date is "+minDate+"."); return; }
-  var _HOLIDAYS = [{ start: "2026-02-10", end: "2026-02-12", label: "Feb 10-12" },{ start: "2026-03-18", end: "2026-03-24", label: "Mar 18-24" }];
+  var _HOLIDAYS = [{ start: "2026-02-10", end: "2026-02-12", label: "Feb 10-12" },{ start: "2026-03-18", end: "2026-03-24", label: "Mar 18-24" },{ start: "2026-05-26", end: "2026-05-31", label: "May 26-31" }];
   for (var hi = 0; hi < _HOLIDAYS.length; hi++) { if (date >= _HOLIDAYS[hi].start && date <= _HOLIDAYS[hi].end) { alert("We are on holiday from " + _HOLIDAYS[hi].label + "."); return; } }
   var orderNo = Date.now();
   var __totals = computeTotalsWithCoupon();
@@ -1970,6 +1983,23 @@ buildTabs(); buildList(); updateCartUI();
     if(promo && !promo._expired) { activeCoupon = promo; refreshCartSheet(); updateCartUI(); document.getElementById('cartSheet').classList.add("active"); history.pushState({ appState: 'active' }, document.title, location.href); }
   });
   dismBtn.addEventListener('click', function(){ popupWrap.classList.remove('active'); });
+})();
+</script>
+
+<script>
+// HOLIDAY NOTICE (shows from 2026-05-24 through 2026-05-31, Dhaka time, once per session)
+(function initHolidayNotice(){
+  var wrap = document.getElementById('holidayNotice');
+  if(!wrap) return;
+  var NOTICE_START = "2026-05-24", NOTICE_END = "2026-05-31";
+  var today = new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Dhaka',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  if(today < NOTICE_START || today > NOTICE_END) return;
+  try { if(sessionStorage.getItem('holidayNoticeSeen') === '1') return; } catch(_){}
+  function close(){ wrap.classList.remove('active'); try { sessionStorage.setItem('holidayNoticeSeen','1'); } catch(_){} }
+  var okBtn = document.getElementById('holidayNoticeOk');
+  if(okBtn) okBtn.addEventListener('click', close);
+  wrap.addEventListener('click', function(e){ if(e.target === wrap) close(); });
+  setTimeout(function(){ wrap.classList.add('active'); }, 600);
 })();
 </script>
 
